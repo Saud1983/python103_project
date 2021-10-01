@@ -1,40 +1,43 @@
 
+from random import randint
 
-class Onwer:
+class BankAccount:
+
+    def account_setter(self, national_id):
+        self.account_id = national_id + randint(1000, 9999)
+        self.balance = 0
+        self.type = 'normal'
+        self.passowrd = '0000'
+
+    def account_display(self,):
+        print(f"Account ID is : {self.account_id} ")
+        print(f"Account Balance ID is : {self.balance}")
+        print(f"Account Type is : {self.type}")
+
+    def Deposit_setter(self, add):
+        self.balance = self.balance + int(add)
+
+    def withdraw_setter(self, deduct):
+        self.balance = self.balance - int(deduct)
+
+class Owner(BankAccount):
 
     def __init__(self, n_id, f_name, l_name, mobile):
         self.first_name = f_name
         self.last_name = l_name
         self.national_id = n_id
         self.mobile = mobile
+        super(Owner, self).account_setter(self.national_id)
+
+    def personal_display(self,):
+        print(f"Client Name is : {self.first_name} {self.last_name} ")
+        print(f"Client national ID is : {self.national_id}")
+        print(f"Client national ID is : {self.mobile}")
 
 
-class BankAccount(Onwer):
+client1 = Owner(1000000000, 'Saud', 'Alghamdi', 500053197)
 
-    def __init__(self, n_id, f_name, l_name, mobile, acc_id, acc_balance,  acc_type, acc_pass):
-        super().__init__(n_id, f_name, l_name, mobile)
-        self.account_id = acc_id
-        self.balance = acc_balance
-        self.type = acc_type
-        self.passowrd = acc_pass
-
-
-
-
-dict = {
-    'saud':[1000000001,'Saud', 'Alghamdi', '0500050000', 10001, 0, 'normal', '0000'],
-    'ali':[1000000002,'Ali', 'Aldossari', '0500050001', 10002, 0, 'normal', '0000'],
-    'ahmed':[1000000003,'Ahmed', 'ALajmi', '0500050002', 10003, 0, 'normal', '0000'],
-    'khalid':[1000000004,'Khalid', 'Alqahtani', '0500050003', 10004, 0, 'normal', '0000'],
-    }
-
-for v in dict.values():
-    client = BankAccount(v[0],v[1],v[2],v[3],v[4],v[5],v[6],v[7])
-    print(client.national_id)
-    print(client.first_name)
-    print(client.last_name)
-    print(client.mobile)
-    print(client.account_id)
-    print(client.balance)
-    print(client.type)
-    print(client.passowrd)
+client1.Deposit_setter(15000)
+client1.withdraw_setter(8000)
+client1.account_display()
+client1.personal_display()
