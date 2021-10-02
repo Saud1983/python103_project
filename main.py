@@ -1,5 +1,5 @@
-
 from random import randint
+
 
 class BankAccount:
 
@@ -14,11 +14,12 @@ class BankAccount:
         print(f"Account Balance ID is : {self.balance}")
         print(f"Account Type is : {self.type}")
 
-    def Deposit_setter(self, add):
+    def deposit_setter(self, add):
         self.balance = self.balance + int(add)
 
     def withdraw_setter(self, deduct):
         self.balance = self.balance - int(deduct)
+
 
 class Owner(BankAccount):
 
@@ -34,10 +35,40 @@ class Owner(BankAccount):
         print(f"Client national ID is : {self.national_id}")
         print(f"Client national ID is : {self.mobile}")
 
+running = True
+used_sequence = []
+current_client = []
+# client1 = Owner(1000000000, 'Saud', 'Alghamdi', 500053197)
+#
+# client1.deposit_setter(15000)
+# client1.withdraw_setter(8000)
+# client1.account_display()
+# client1.personal_display()
 
-client1 = Owner(1000000000, 'Saud', 'Alghamdi', 500053197)
+while running:
+    choice = input("Enter the account number, '1' for creating new account, or '0' to stop the program :\n")
+    # choices
+    if choice == "1":
+        for i in range(1, 100):
+            if i not in used_sequence:
+                add = True
+                while add:
+                    national_id = int(input("ID Please: \n"))
+                    first_name = input('First name: \n')
+                    last_name = input('Last name: \n')
+                    mobile_no = int(input('mobile number: \n'))
+                    print(f"Person's name is: '{first_name} {last_name}', ID {national_id}, Phone number is: '{mobile_no}'\n")
+                    submit = input("Enter 'Y' to save the entry or simply enter any value to add them again\n").lower()
 
-client1.Deposit_setter(15000)
-client1.withdraw_setter(8000)
-client1.account_display()
-client1.personal_display()
+                    if submit == "y":
+                        globals()[f"client{i}"] = Owner(national_id, first_name, last_name, mobile_no)
+                        used_sequence.append(i)
+                        current_client.append(f"client{i}")
+                        add = False
+                break
+        current_client[0].account_display()
+        current_client[0].personal_display()
+    elif choice == "0":
+        running = False
+    else:
+        pass
