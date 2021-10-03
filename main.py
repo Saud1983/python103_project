@@ -1,4 +1,5 @@
 from random import randint
+from pprint import pprint
 
 
 class BankAccount:
@@ -21,29 +22,42 @@ class BankAccount:
         self.balance = self.balance - int(deduct)
 
 
-class Owner(BankAccount):
+class Client(BankAccount):
 
-    def __init__(self, n_id, f_name, l_name, mobile):
+    def __init__(self, client_id, n_id, f_name, l_name, mobile):
+        self.client_id = client_id
         self.first_name = f_name
         self.last_name = l_name
-        self.national_id = n_id
+        self.national_id1 = n_id
         self.mobile = mobile
-        super(Owner, self).account_setter(self.national_id)
+        super(Client, self).account_setter(self.national_id1)
 
-    def personal_display(self,):
+    def client_info_setter(self):
+        clients_book[self.client_id] = {
+            'personal_info': {
+                'first_name': self.first_name,
+                'last_name': self.last_name,
+                'National_id': self.national_id1,
+                'mobile_no': self.mobile
+            },
+            'account_info': {
+                'account_id': self.account_id,
+                'account_balance': self.balance,
+                'account_type': self.type,
+                'account_password': self.passowrd,
+            }
+        }
+
+    def personal_display(self):
         print(f"Client Name is : {self.first_name} {self.last_name} ")
-        print(f"Client national ID is : {self.national_id}")
+        print(f"Client national ID is : {self.national_id1}")
         print(f"Client national ID is : {self.mobile}")
+
 
 running = True
 used_sequence = []
-current_client = []
-# client1 = Owner(1000000000, 'Saud', 'Alghamdi', 500053197)
-#
-# client1.deposit_setter(15000)
-# client1.withdraw_setter(8000)
-# client1.account_display()
-# client1.personal_display()
+current_client = ""
+clients_book = {}
 
 while running:
     choice = input("Enter the account number, '1' for creating new account, or '0' to stop the program :\n")
@@ -61,13 +75,17 @@ while running:
                     submit = input("Enter 'Y' to save the entry or simply enter any value to add them again\n").lower()
 
                     if submit == "y":
-                        globals()[f"client{i}"] = Owner(national_id, first_name, last_name, mobile_no)
+                        current_client += f"client{i}"
+                        client_info = Client(current_client, national_id, first_name, last_name, mobile_no)
                         used_sequence.append(i)
-                        current_client.append(f"client{i}")
+                        client_info.client_info_setter()
+                        current_client = ""
                         add = False
                 break
-        current_client[0].account_display()
-        current_client[0].personal_display()
+
+        client_info.account_display()
+        client_info.personal_display()
+        pprint(clients_book)
     elif choice == "0":
         running = False
     else:
