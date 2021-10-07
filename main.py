@@ -1,4 +1,8 @@
 
+from random import randint
+from pprint import pprint
+
+
 class BankAccount:
 
     def account_setter(self, national_id):
@@ -13,17 +17,21 @@ class BankAccount:
         print(f"Account Type is : {self.type}")
 
     def deposit_setter(self, add):
-        self.balance = self.balance + int(add)
+        # self.balance =
+        item['account_info']['account_balance'] = self.balance + int(add)
 
     def withdraw_setter(self, deduct):
-        self.balance = self.balance - int(deduct)
+        # self.balance =
+        item['account_info']['account_balance'] = self.balance - int(deduct)
 
 
 class Modifications(BankAccount):
 
-    def __init__(self, account_id, account_balance, account_password, account_type, mobile):
-
-
+    def __init__(self, account_balance, account_password, account_type, mobile):
+        self.balance = account_balance
+        self.passowrd = account_password
+        self.type = account_type
+        self.mobile = mobile
 
 
 
@@ -60,12 +68,10 @@ class Client(BankAccount):
         print(f"Client national ID is : {self.mobile}")
 
 
-
-
-
 running = True
 used_sequence = []
 new_client = ""
+test11111 = 0
 clients_book = {'client1': {'account_info': {'account_balance': 0,
                               'account_id': 1022821753,
                               'account_password': '0000',
@@ -108,9 +114,9 @@ while running:
 
         client_info.account_display()
         client_info.personal_display()
-        pprint(clients_book)
+        # pprint(clients_book)
     elif choice == "0":
-        running = False
+        pprint(clients_book)
     else:
         test = 0
         for item in clients_book.items():
@@ -127,8 +133,23 @@ while running:
             password = input('Enter your password: ')
             if password == item['account_info']['account_password']:
                 # chosen_account = item[]
-                current_client = Modifications()
+                current_client = Modifications(item['account_info']['account_balance'],
+                                               item['account_info']['account_password'],item['account_info']['account_type'],
+                                               item['personal_info']['mobile_no'])
                 test = 0
             else:
                 test -= 1
                 print(f"Incorrect password, you still have {test} attempts ")
+
+
+        if test11111 == 0:
+            choice = input("enter amount for deposit:\n")
+
+            current_client.deposit_setter(choice)
+            test11111 += 1
+        else:
+
+            choice = input("enter amount to widthdeae:\n")
+
+            current_client.withdraw_setter(choice)
+            test11111 -= 1
