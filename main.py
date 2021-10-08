@@ -1,4 +1,3 @@
-
 from random import randint
 from pprint import pprint
 
@@ -17,12 +16,12 @@ class BankAccount:
         print(f"Account Type is : {self.type}")
 
     def deposit_setter(self, add):
-        # self.balance =
-        item['account_info']['account_balance'] = self.balance + int(add)
+        self.balance = self.balance + int(add)
+        item['account_info']['account_balance'] = self.balance
 
     def withdraw_setter(self, deduct):
-        # self.balance =
-        item['account_info']['account_balance'] = self.balance - int(deduct)
+        self.balance = self.balance - int(deduct)
+        item['account_info']['account_balance'] = self.balance
 
 
 class Modifications(BankAccount):
@@ -32,7 +31,6 @@ class Modifications(BankAccount):
         self.passowrd = account_password
         self.type = account_type
         self.mobile = mobile
-
 
 
 
@@ -142,14 +140,14 @@ while running:
                 print(f"Incorrect password, you still have {test} attempts ")
 
 
-        if test11111 == 0:
-            choice = input("enter amount for deposit:\n")
+            if test11111 == 0:
+                choice = input("enter amount for deposit:\n")
 
-            current_client.deposit_setter(choice)
-            test11111 += 1
-        else:
+                current_client.deposit_setter(choice)
+                test11111 += 1
+            else:
 
-            choice = input("enter amount to widthdeae:\n")
+                choice = input("enter amount to widthdeae:\n")
 
-            current_client.withdraw_setter(choice)
-            test11111 -= 1
+                current_client.withdraw_setter(choice)
+                test11111 -= 1
