@@ -23,6 +23,10 @@ class BankAccount:
         self.balance = self.balance - int(deduct)
         item['account_info']['account_balance'] = self.balance
 
+    def password_setter(self, password):
+        self.passowrd = password
+        item['account_info']['account_password'] = self.passowrd
+
 
 
 class Client(BankAccount):
@@ -65,7 +69,7 @@ class Modifications(Client):
 
     def __init__(self, account_balance, account_password, account_type, mobile):
         self.balance = account_balance
-        self.passowrd = account_password
+        self.password = account_password
         self.type = account_type
         self.mobile = mobile
 
@@ -134,6 +138,7 @@ while running:
 
 
         while test != 0:
+            inside = False
             password = input('Enter your password: ')
             if password == item['account_info']['account_password']:
                 current_client = Modifications(item['account_info']['account_balance'],
@@ -141,38 +146,53 @@ while running:
                                                item['account_info']['account_type'],
                                                item['personal_info']['mobile_no'])
                 test = 0
+                inside = True
             else:
                 test -= 1
                 print(f"Incorrect password, you still have {test} attempts ")
 
-            choice = input("Enter '1' for Deposit:\n"
-                           "Enter '2' for Withdraw:\n"
-                           "Enter '3' for update Mobile No:\n"
-                           "Enter '4' for Transactions Info:\n"
-                           "Enter '5' for Account Info:\n")
 
-        inside = True
-        while inside:
-            if choice == '1':
-                choice = input("enter amount for deposit:\n")
-                current_client.deposit_setter(choice)
 
-            elif choice == '2':
-                choice = input("enter amount to widthdeae:\n")
-                current_client.withdraw_setter(choice)
 
-            elif choice == '3':
-                choice = input("enter new mobile no :\n")
-                current_client.mobile_setter(choice)
+            while inside:
+                choice = input("Enter '1' for Deposit:\n"
+                               "Enter '2' for Withdraw:\n"
+                               "Enter '3' for update Mobile No:\n"
+                               "Enter '4' for updating password:\n"
+                               "Enter '5' for Account Info:\n")
+                if choice == '1':
+                    choice = input("enter amount for deposit:\n")
+                    current_client.deposit_setter(choice)
 
-            elif choice == '4':
-                pass
+                elif choice == '2':
+                    choice = input("enter amount to widthdeae:\n")
+                    current_client.withdraw_setter(choice)
 
-            elif choice == '5':
-                print(item)
+                elif choice == '3':
+                    choice = input("enter new mobile no :\n")
+                    current_client.mobile_setter(choice)
 
-            elif choice == '0':
-                inside = False
+                elif choice == '4':
+                    choice = input("enter current password :\n")
+                    confirmation = False
+                    if choice == item['account_info']['account_password']:
+                        while not confirmation:
+                            new_password = input("enter a new password :\n")
+                            confirm_password = input("enter the password again :\n")
+                            if new_password == confirm_password:
+                                current_client.password_setter(new_password)
+                                confirmation = True
+                            else:
+                                print(f"Incorrect confirmation, try again")
+                    else:
+                        print(f"Incorrect password, You are redirected to the main screen ")
+                        inside = False
 
-            else:
-                print("Invalid Entry, Try again")
+                elif choice == '5':
+                    print(item)
+
+                elif choice == '0':
+                    inside = False
+
+                else:
+                    print("Invalid Entry, Try again")
