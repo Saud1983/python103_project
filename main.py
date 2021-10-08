@@ -24,15 +24,6 @@ class BankAccount:
         item['account_info']['account_balance'] = self.balance
 
 
-class Modifications(BankAccount):
-
-    def __init__(self, account_balance, account_password, account_type, mobile):
-        self.balance = account_balance
-        self.passowrd = account_password
-        self.type = account_type
-        self.mobile = mobile
-
-
 
 class Client(BankAccount):
 
@@ -64,6 +55,21 @@ class Client(BankAccount):
         print(f"Client Name is : {self.first_name} {self.last_name} ")
         print(f"Client national ID is : {self.national_id1}")
         print(f"Client national ID is : {self.mobile}")
+
+    def mobile_setter(self, new_number):
+        self.mobile = int(new_number)
+        item['personal_info']['mobile_no'] = self.mobile
+
+
+class Modifications(Client):
+
+    def __init__(self, account_balance, account_password, account_type, mobile):
+        self.balance = account_balance
+        self.passowrd = account_password
+        self.type = account_type
+        self.mobile = mobile
+
+
 
 
 running = True
@@ -140,14 +146,17 @@ while running:
                 print(f"Incorrect password, you still have {test} attempts ")
 
 
-            if test11111 == 0:
-                choice = input("enter amount for deposit:\n")
+        # if test11111 == 0:
+            choice = input("enter amount for deposit:\n")
 
-                current_client.deposit_setter(choice)
-                test11111 += 1
-            else:
+            current_client.deposit_setter(choice)
+            # test11111 += 1
+        # else:
 
-                choice = input("enter amount to widthdeae:\n")
+            choice = input("enter amount to widthdeae:\n")
 
-                current_client.withdraw_setter(choice)
-                test11111 -= 1
+            current_client.withdraw_setter(choice)
+            # test11111 -= 1
+            choice = input("enter new mobile no :\n")
+
+            current_client.mobile_setter(choice)
