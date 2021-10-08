@@ -126,7 +126,7 @@ while running:
         for item in clients_book.items():
             if str(item[1]['account_info']['account_id']) == choice:
                 item = item[1]
-                print(item)
+                # print(item)
                 test = 3
                 break
         if test == 0:
@@ -136,27 +136,43 @@ while running:
         while test != 0:
             password = input('Enter your password: ')
             if password == item['account_info']['account_password']:
-                # chosen_account = item[]
                 current_client = Modifications(item['account_info']['account_balance'],
-                                               item['account_info']['account_password'],item['account_info']['account_type'],
+                                               item['account_info']['account_password'],
+                                               item['account_info']['account_type'],
                                                item['personal_info']['mobile_no'])
                 test = 0
             else:
                 test -= 1
                 print(f"Incorrect password, you still have {test} attempts ")
 
+            choice = input("Enter '1' for Deposit:\n"
+                           "Enter '2' for Withdraw:\n"
+                           "Enter '3' for update Mobile No:\n"
+                           "Enter '4' for Transactions Info:\n"
+                           "Enter '5' for Account Info:\n")
 
-        # if test11111 == 0:
-            choice = input("enter amount for deposit:\n")
+        inside = True
+        while inside:
+            if choice == '1':
+                choice = input("enter amount for deposit:\n")
+                current_client.deposit_setter(choice)
 
-            current_client.deposit_setter(choice)
-            # test11111 += 1
-        # else:
+            elif choice == '2':
+                choice = input("enter amount to widthdeae:\n")
+                current_client.withdraw_setter(choice)
 
-            choice = input("enter amount to widthdeae:\n")
+            elif choice == '3':
+                choice = input("enter new mobile no :\n")
+                current_client.mobile_setter(choice)
 
-            current_client.withdraw_setter(choice)
-            # test11111 -= 1
-            choice = input("enter new mobile no :\n")
+            elif choice == '4':
+                pass
 
-            current_client.mobile_setter(choice)
+            elif choice == '5':
+                print(item)
+
+            elif choice == '0':
+                inside = False
+
+            else:
+                print("Invalid Entry, Try again")
