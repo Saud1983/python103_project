@@ -8,7 +8,7 @@ class BankAccount:
         self.account_id = national_id + randint(1000, 9999)
         self.balance = 0
         self.type = 'normal'
-        self.passowrd = '0000'
+        self.password = '0000'
 
     def account_display(self,):
         print(f"Account ID is : {self.account_id} ")
@@ -24,8 +24,8 @@ class BankAccount:
         item['account_info']['account_balance'] = self.balance
 
     def password_setter(self, password):
-        self.passowrd = password
-        item['account_info']['account_password'] = self.passowrd
+        self.password = password
+        item['account_info']['account_password'] = self.password
 
 
 
@@ -51,7 +51,7 @@ class Client(BankAccount):
                 'account_id': self.account_id,
                 'account_balance': self.balance,
                 'account_type': self.type,
-                'account_password': self.passowrd,
+                'account_password': self.password,
             }
         }
 
@@ -74,8 +74,6 @@ class Modifications(Client):
         self.mobile = mobile
 
 
-
-
 running = True
 used_sequence = []
 new_client = ""
@@ -94,7 +92,7 @@ clients_book = {'client1': {'account_info': {'account_balance': 0,
                               'account_type': 'normal'},
              'personal_info': {'National_id': 1066858745,
                                'first_name': 'Sana',
-                               'last_name': 'Alghamdi',
+                               'last_name': 'alghamdi',
                                'mobile_no': 533222025}}}
 
 while running:
@@ -119,17 +117,17 @@ while running:
                     client_info.client_info_setter()
                     new_client = ""
                     add = False
-
-        client_info.account_display()
-        client_info.personal_display()
-        # pprint(clients_book)
+                    client_info.account_display()
+                    client_info.personal_display()
+                    # pprint(clients_book)
     elif choice == "0":
         pprint(clients_book)
     else:
         test = 0
-        for item in clients_book.items():
-            if str(item[1]['account_info']['account_id']) == choice:
-                item = item[1]
+        item = {}  # Declare here so it will not give warning that says (variable can be unidentified)
+        for element in clients_book.items():
+            if str(element[1]['account_info']['account_id']) == choice:
+                item = element[1]
                 # print(item)
                 test = 3
                 break
@@ -147,52 +145,48 @@ while running:
                                                item['personal_info']['mobile_no'])
                 test = 0
                 inside = True
+                while inside:
+                    choice = input("Enter '1' for Deposit:\n"
+                                   "Enter '2' for Withdraw:\n"
+                                   "Enter '3' for update Mobile No:\n"
+                                   "Enter '4' for updating password:\n"
+                                   "Enter '5' for Account Info:\n")
+                    if choice == '1':
+                        choice = input("enter amount for deposit:\n")
+                        current_client.deposit_setter(choice)
+
+                    elif choice == '2':
+                        choice = input("enter amount to withdraw:\n")
+                        current_client.withdraw_setter(choice)
+
+                    elif choice == '3':
+                        choice = input("enter new mobile no :\n")
+                        current_client.mobile_setter(choice)
+
+                    elif choice == '4':
+                        choice = input("enter current password :\n")
+                        confirmation = False
+                        if choice == item['account_info']['account_password']:
+                            while not confirmation:
+                                new_password = input("enter a new password :\n")
+                                confirm_password = input("enter the password again :\n")
+                                if new_password == confirm_password:
+                                    current_client.password_setter(new_password)
+                                    confirmation = True
+                                else:
+                                    print(f"Incorrect confirmation, try again")
+                        else:
+                            print(f"Incorrect password, You are redirected to the main screen ")
+                            inside = False
+
+                    elif choice == '5':
+                        print(item)
+
+                    elif choice == '0':
+                        inside = False
+
+                    else:
+                        print("Invalid Entry, Try again")
             else:
                 test -= 1
                 print(f"Incorrect password, you still have {test} attempts ")
-
-
-
-
-            while inside:
-                choice = input("Enter '1' for Deposit:\n"
-                               "Enter '2' for Withdraw:\n"
-                               "Enter '3' for update Mobile No:\n"
-                               "Enter '4' for updating password:\n"
-                               "Enter '5' for Account Info:\n")
-                if choice == '1':
-                    choice = input("enter amount for deposit:\n")
-                    current_client.deposit_setter(choice)
-
-                elif choice == '2':
-                    choice = input("enter amount to widthdeae:\n")
-                    current_client.withdraw_setter(choice)
-
-                elif choice == '3':
-                    choice = input("enter new mobile no :\n")
-                    current_client.mobile_setter(choice)
-
-                elif choice == '4':
-                    choice = input("enter current password :\n")
-                    confirmation = False
-                    if choice == item['account_info']['account_password']:
-                        while not confirmation:
-                            new_password = input("enter a new password :\n")
-                            confirm_password = input("enter the password again :\n")
-                            if new_password == confirm_password:
-                                current_client.password_setter(new_password)
-                                confirmation = True
-                            else:
-                                print(f"Incorrect confirmation, try again")
-                    else:
-                        print(f"Incorrect password, You are redirected to the main screen ")
-                        inside = False
-
-                elif choice == '5':
-                    print(item)
-
-                elif choice == '0':
-                    inside = False
-
-                else:
-                    print("Invalid Entry, Try again")
