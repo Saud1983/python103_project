@@ -180,7 +180,19 @@ while running:
                             inside = False
 
                     elif choice == '5':
-                        print(item)
+                        # pprint(item)
+                        for i in range(2):
+                            if i == 0:
+                                x = 'account_info'
+                                print(f" Account ID is : {item[x]['account_id']}")
+                                print(f" Account Balance is : {item[x]['account_balance']}")
+                                print(f" Account Password is : {item[x]['account_password']}")
+                                print(f" Account Type is : {item[x]['account_type']}")
+                            else:
+                                x = 'personal_info'
+                                print(f" Client Name is : {item[x]['first_name']} {item[x]['last_name']}")
+                                print(f" Client National ID is : {item[x]['National_id']}")
+                                print(f" Client Mobile Number is : {item[x]['mobile_no']}\n\n")
 
                     elif choice == '0':
                         inside = False
