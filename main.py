@@ -12,7 +12,8 @@ class BankAccount:
 
     def account_display(self,):
         print(f"Account ID is : {self.account_id} ")
-        print(f"Account Balance ID is : {self.balance}")
+        print(f"Account Balance is : {self.balance}")
+        print(f"Account Password is : {self.password}")
         print(f"Account Type is : {self.type}")
 
     def deposit_setter(self, add):
@@ -20,8 +21,11 @@ class BankAccount:
         item['account_info']['account_balance'] = self.balance
 
     def withdraw_setter(self, deduct):
-        self.balance = self.balance - int(deduct)
-        item['account_info']['account_balance'] = self.balance
+        if self.balance >= int(deduct):
+            self.balance = self.balance - int(deduct)
+            item['account_info']['account_balance'] = self.balance
+        else:
+            print('Your account balance is not sufficient for this withdraw!!!')
 
     def password_setter(self, password):
         self.password = password
@@ -58,7 +62,7 @@ class Client(BankAccount):
     def personal_display(self):
         print(f"Client Name is : {self.first_name} {self.last_name} ")
         print(f"Client national ID is : {self.national_id1}")
-        print(f"Client national ID is : {self.mobile}")
+        print(f"Client Mobile Number is : {self.mobile}")
 
     def mobile_setter(self, new_number):
         self.mobile = int(new_number)
@@ -121,7 +125,8 @@ while running:
                     client_info.personal_display()
                     # pprint(clients_book)
     elif choice == "0":
-        pprint(clients_book)
+        # pprint(clients_book)
+        running = False
     else:
         test = 0
         item = {}  # Declare here so it will not give warning that says (variable can be unidentified)
@@ -146,22 +151,28 @@ while running:
                 test = 0
                 inside = True
                 while inside:
-                    choice = input("Enter '1' for Deposit:\n"
+                    choice = input("\nEnter '1' for Deposit:\n"
                                    "Enter '2' for Withdraw:\n"
                                    "Enter '3' for update Mobile No:\n"
                                    "Enter '4' for updating password:\n"
-                                   "Enter '5' for Account Info:\n")
+                                   "Enter '5' for Account Info:\n"
+                                   "or\n"
+                                   "Enter 0 to logoff:\n")
+                    print('\n')
                     if choice == '1':
                         choice = input("enter amount for deposit:\n")
                         current_client.deposit_setter(choice)
+
 
                     elif choice == '2':
                         choice = input("enter amount to withdraw:\n")
                         current_client.withdraw_setter(choice)
 
+
                     elif choice == '3':
                         choice = input("enter new mobile no :\n")
                         current_client.mobile_setter(choice)
+
 
                     elif choice == '4':
                         choice = input("enter current password :\n")
@@ -179,26 +190,28 @@ while running:
                             print(f"Incorrect password, You are redirected to the main screen ")
                             inside = False
 
+
                     elif choice == '5':
                         # pprint(item)
                         for i in range(2):
                             if i == 0:
                                 x = 'account_info'
-                                print(f" Account ID is : {item[x]['account_id']}")
-                                print(f" Account Balance is : {item[x]['account_balance']}")
-                                print(f" Account Password is : {item[x]['account_password']}")
-                                print(f" Account Type is : {item[x]['account_type']}")
+                                print(f"Account ID is : {item[x]['account_id']}")
+                                print(f"Account Balance is : {item[x]['account_balance']}")
+                                print(f"Account Password is : {item[x]['account_password']}")
+                                print(f"Account Type is : {item[x]['account_type']}")
                             else:
                                 x = 'personal_info'
-                                print(f" Client Name is : {item[x]['first_name']} {item[x]['last_name']}")
-                                print(f" Client National ID is : {item[x]['National_id']}")
-                                print(f" Client Mobile Number is : {item[x]['mobile_no']}\n\n")
+                                print(f"Client Name is : {item[x]['first_name']} {item[x]['last_name']}")
+                                print(f"Client National ID is : {item[x]['National_id']}")
+                                print(f"Client Mobile Number is : {item[x]['mobile_no']}")
 
                     elif choice == '0':
                         inside = False
 
                     else:
                         print("Invalid Entry, Try again")
+
             else:
                 test -= 1
                 print(f"Incorrect password, you still have {test} attempts ")
