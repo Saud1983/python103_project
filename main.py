@@ -5,9 +5,8 @@ from datetime import datetime
 
 class BankAccount:
 
-
-    def account_setter(self, national_id):
-        self.account_id = national_id + randint(1000, 9999)
+    def account_setter(self, client_national_id):
+        self.account_id = client_national_id + randint(1000, 9999)
         self.balance = 0
         self.type = 'normal'
         self.password = '0000'
@@ -25,7 +24,8 @@ class BankAccount:
         today_date = transaction_info.date().strftime('%d %m %Y')
         day_number = transaction_info.strftime('%w')
         transaction_time = transaction_info.time().strftime('%I:%M %p')
-        print(f'تم ايداع {add} ريال لرصيدك البنكي في يوم {ar_weekday[int(day_number)]} بتاريخ  {today_date} الساعه {transaction_time}')
+        print(f'تم ايداع {add} ريال لرصيدك البنكي في يوم '
+              f'{ar_weekday[int(day_number)]} بتاريخ  {today_date} الساعه {transaction_time}')
 
     def withdraw_setter(self, deduct):
         if self.balance >= int(deduct):
@@ -36,15 +36,14 @@ class BankAccount:
             today_date = transaction_info.date().strftime('%d %m %Y')
             day_number = transaction_info.strftime('%w')
             transaction_time = transaction_info.time().strftime('%I:%M %p')
-            print(
-                f'تم خصم {deduct} ريال من رصيدك البنكي في يوم {ar_weekday[int(day_number)]} بتاريخ  {today_date} الساعه {transaction_time}')
+            print(f'تم خصم {deduct} ريال من رصيدك البنكي في يوم .'
+                  f'{ar_weekday[int(day_number)]} بتاريخ  {today_date} الساعه {transaction_time}')
         else:
             print('Your account balance is not sufficient for this withdraw!!!')
 
-    def password_setter(self, password):
-        self.password = password
-        item['account_info']['account_password'] = self.password
-
+    def password_setter(self, account_password):
+        self.account_password = account_password
+        item['account_info']['account_password'] = self.account_password
 
 
 class Client(BankAccount):
@@ -95,24 +94,24 @@ class Modifications(Client):
 running = True
 used_sequence = []
 new_client = ""
-ar_weekday = ['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت',]
-# clients_book = {}
-clients_book = {'client1': {'account_info': {'account_balance': 0,
-                              'account_id': 1022821753,
-                              'account_password': '0000',
-                              'account_type': 'normal'},
-             'personal_info': {'National_id': 1022818684,
-                               'first_name': 'Saud',
-                               'last_name': 'Alghamdi',
-                               'mobile_no': 500053197}},
- 'client2': {'account_info': {'account_balance': 0,
-                              'account_id': 1066865284,
-                              'account_password': '0000',
-                              'account_type': 'normal'},
-             'personal_info': {'National_id': 1066858745,
-                               'first_name': 'Sana',
-                               'last_name': 'alghamdi',
-                               'mobile_no': 533222025}}}
+ar_weekday = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت']
+clients_book = {}
+# clients_book = {'client1': {'account_info': {'account_balance': 0,
+#                               'account_id': 1022821753,
+#                               'account_password': '0000',
+#                               'account_type': 'normal'},
+#              'personal_info': {'National_id': 1022818684,
+#                                'first_name': 'Khalid',
+#                                'last_name': 'Waleed',
+#                                'mobile_no': 500053197}},
+#  'client2': {'account_info': {'account_balance': 0,
+#                               'account_id': 1066865284,
+#                               'account_password': '0000',
+#                               'account_type': 'normal'},
+#              'personal_info': {'National_id': 1066858745,
+#                                'first_name': 'Ali',
+#                                'last_name': 'Ahmed',
+#                                'mobile_no': 533222025}}}
 while running:
     choice = input("Enter the account number,"
                    " '1' for creating new account,"
@@ -122,13 +121,14 @@ while running:
     if choice == "1":
         i = len(used_sequence)+1
         if i not in used_sequence:
-            add = True
-            while add:
+            review = True
+            while review:
                 national_id = int(input("ID Please: \n"))
                 first_name = input('First name: \n').lower().capitalize()
                 last_name = input('Last name: \n').lower().capitalize()
                 mobile_no = int(input('mobile number: \n'))
-                print(f"Person's name is: '{first_name} {last_name}', ID {national_id}, Phone number is: '{mobile_no}'\n")
+                print(f"Person's name is: '{first_name} {last_name}', ID {national_id},"
+                      f" Phone number is: '{mobile_no}'\n")
                 submit = input("Enter 'Y' to save the entry or simply enter any value to add them again\n").lower()
 
                 if submit == "y":
@@ -137,7 +137,7 @@ while running:
                     used_sequence.append(i)
                     client_info.client_info_setter()
                     new_client = ""
-                    add = False
+                    review = False
                     client_info.account_display()
                     client_info.personal_display()
                     # pprint(clients_book)
