@@ -10,7 +10,7 @@ class BankAccount:
         self.type = 'normal'
         self.password = '0000'
 
-    def account_display(self,):
+    def account_display(self):
         print(f"Account ID is : {self.account_id} ")
         print(f"Account Balance is : {self.balance}")
         print(f"Account Password is : {self.password}")
@@ -30,7 +30,6 @@ class BankAccount:
     def password_setter(self, password):
         self.password = password
         item['account_info']['account_password'] = self.password
-
 
 
 class Client(BankAccount):
@@ -81,29 +80,16 @@ class Modifications(Client):
 running = True
 used_sequence = []
 new_client = ""
-test11111 = 0
-clients_book = {'client1': {'account_info': {'account_balance': 0,
-                              'account_id': 1022821753,
-                              'account_password': '0000',
-                              'account_type': 'normal'},
-             'personal_info': {'National_id': 1022818684,
-                               'first_name': 'Saud',
-                               'last_name': 'Alghamdi',
-                               'mobile_no': 500053197}},
- 'client2': {'account_info': {'account_balance': 0,
-                              'account_id': 1066865284,
-                              'account_password': '0000',
-                              'account_type': 'normal'},
-             'personal_info': {'National_id': 1066858745,
-                               'first_name': 'Sana',
-                               'last_name': 'alghamdi',
-                               'mobile_no': 533222025}}}
+clients_book = {}
 
 while running:
-    choice = input("Enter the account number, '1' for creating new account, or '0' to stop the program :\n")
+    choice = input("Enter the account number,"
+                   " '1' for creating new account,"
+                   " '2' for check the clients book"
+                   " or '0' to stop the program :\n")
     # choices
     if choice == "1":
-        i = len(used_sequence)+3
+        i = len(used_sequence)+1
         if i not in used_sequence:
             add = True
             while add:
@@ -125,8 +111,9 @@ while running:
                     client_info.personal_display()
                     # pprint(clients_book)
     elif choice == "0":
-        # pprint(clients_book)
         running = False
+    elif choice == "2":
+        pprint(clients_book)
     else:
         test = 0
         item = {}  # Declare here so it will not give warning that says (variable can be unidentified)
@@ -138,7 +125,6 @@ while running:
                 break
         if test == 0:
             print("Sorry that item is not available.")
-
 
         while test != 0:
             inside = False
@@ -163,16 +149,13 @@ while running:
                         choice = input("enter amount for deposit:\n")
                         current_client.deposit_setter(choice)
 
-
                     elif choice == '2':
                         choice = input("enter amount to withdraw:\n")
                         current_client.withdraw_setter(choice)
 
-
                     elif choice == '3':
                         choice = input("enter new mobile no :\n")
                         current_client.mobile_setter(choice)
-
 
                     elif choice == '4':
                         choice = input("enter current password :\n")
@@ -189,7 +172,6 @@ while running:
                         else:
                             print(f"Incorrect password, You are redirected to the main screen ")
                             inside = False
-
 
                     elif choice == '5':
                         # pprint(item)
