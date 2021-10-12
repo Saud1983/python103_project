@@ -1,8 +1,10 @@
 from random import randint
 from pprint import pprint
+from datetime import datetime
 
 
 class BankAccount:
+
 
     def account_setter(self, national_id):
         self.account_id = national_id + randint(1000, 9999)
@@ -19,17 +21,30 @@ class BankAccount:
     def deposit_setter(self, add):
         self.balance = self.balance + int(add)
         item['account_info']['account_balance'] = self.balance
+        transaction_info = datetime.now()
+        today_date = transaction_info.date().strftime('%d %m %Y')
+        day_number = transaction_info.strftime('%w')
+        transaction_time = transaction_info.time().strftime('%I:%M %p')
+        print(f'تم ايداع {add} ريال لرصيدك البنكي في يوم {ar_weekday[int(day_number)]} بتاريخ  {today_date} الساعه {transaction_time}')
 
     def withdraw_setter(self, deduct):
         if self.balance >= int(deduct):
             self.balance = self.balance - int(deduct)
             item['account_info']['account_balance'] = self.balance
+            item['account_info']['account_balance'] = self.balance
+            transaction_info = datetime.now()
+            today_date = transaction_info.date().strftime('%d %m %Y')
+            day_number = transaction_info.strftime('%w')
+            transaction_time = transaction_info.time().strftime('%I:%M %p')
+            print(
+                f'تم خصم {deduct} ريال من رصيدك البنكي في يوم {ar_weekday[int(day_number)]} بتاريخ  {today_date} الساعه {transaction_time}')
         else:
             print('Your account balance is not sufficient for this withdraw!!!')
 
     def password_setter(self, password):
         self.password = password
         item['account_info']['account_password'] = self.password
+
 
 
 class Client(BankAccount):
@@ -80,8 +95,24 @@ class Modifications(Client):
 running = True
 used_sequence = []
 new_client = ""
-clients_book = {}
-
+ar_weekday = ['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت',]
+# clients_book = {}
+clients_book = {'client1': {'account_info': {'account_balance': 0,
+                              'account_id': 1022821753,
+                              'account_password': '0000',
+                              'account_type': 'normal'},
+             'personal_info': {'National_id': 1022818684,
+                               'first_name': 'Saud',
+                               'last_name': 'Alghamdi',
+                               'mobile_no': 500053197}},
+ 'client2': {'account_info': {'account_balance': 0,
+                              'account_id': 1066865284,
+                              'account_password': '0000',
+                              'account_type': 'normal'},
+             'personal_info': {'National_id': 1066858745,
+                               'first_name': 'Sana',
+                               'last_name': 'alghamdi',
+                               'mobile_no': 533222025}}}
 while running:
     choice = input("Enter the account number,"
                    " '1' for creating new account,"
