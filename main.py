@@ -22,9 +22,9 @@ class BankAccount:
         print(f"Account Password is : {self.password}")
         print(f"Account Type is : {self.type}")
 
-    def deposit_setter(self, add):  # This method to add money to the account and print the transaction details
-        # this line is to apply the change to the object, so it can accept another transaction without having to logoff
-        # from the object and create it again
+    def deposit_setter(self, add):  # To add money to the account and print the transaction details
+        # this line is to apply the change to the object it self, so it can accept another transaction without having
+        # to logoff from the object and create it again
         self.balance = self.balance + int(add)
         # This line is to change the balance in the dictionary for that account.
         item['account_info']['account_balance'] = self.balance
@@ -37,12 +37,15 @@ class BankAccount:
         print(f'تم ايداع {add} ريال لرصيدك البنكي في يوم '
               f'{ar_weekday[int(day_number)]} بتاريخ  {today_date} الساعه {transaction_time}')
 
-    def withdraw_setter(self, deduct):
-        if self.balance >= int(deduct):
+    def withdraw_setter(self, deduct):  # To deduct money to the account and print the transaction details
+        if self.balance >= int(deduct):  # To check whether or not the account is sufficient
+            # this line is to apply the change to the object it self, so it can accept another transaction without
+            # having to logoff from the object and create it again
             self.balance = self.balance - int(deduct)
+            # This line is to change the balance in the dictionary for that account.
             item['account_info']['account_balance'] = self.balance
 
-            # THESE LINES ARE IN deposit_setter
+            # THESE LINES ARE IN deposit_setter AND SHOULDN'T BE LIKE THIS
             transaction_info = datetime.now()
             today_date = transaction_info.date().strftime('%d %m %Y')
             day_number = transaction_info.strftime('%w')
@@ -52,8 +55,14 @@ class BankAccount:
         else:
             print('Your account balance is not sufficient for this withdraw!!!')
 
-    def password_setter(self, account_password):
+    def password_setter(self, account_password):  # To change the account password
+        #  there is a condition to confirm the old password before updating it, and that condition should be here
+
+        # this line is to apply the change to the object it self, so it can accept another transaction without
+        # having to logoff from the object and create it again
         self.account_password = account_password
+
+        # This line is to change the password in the dictionary for that account.
         item['account_info']['account_password'] = self.account_password
 
 
