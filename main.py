@@ -4,22 +4,32 @@ from datetime import datetime
 
 
 class BankAccount:
+    """ This Class has no __init__, because it create a bank account based on Client class,
+     this class initiate back account whenever a new client was created, this class has methods like
+     account_display, deposit_setter, withdraw_setter, password_setter"""
 
-    def account_setter(self, client_national_id):
-        self.account_id = client_national_id + randint(1000, 9999)
-        self.balance = 0
-        self.type = 'normal'
-        self.password = '0000'
+    def account_setter(self, client_national_id):  # To pass the client national ID and use it for creating Bank Account
+        self.account_id = client_national_id + randint(1000, 9999)  # Calculates the Account ID based on national ID
+        self.balance = 0  # Set the balance equals 0 whenever a new account is created
+        # the plan for account type to be used with special treatment when a client has more than 250,000, but not yet.
+        self.type = 'normal'  # Set the account type to normal whenever a new account is created.
+        self.password = '0000'  # Set the account password equals 0000 whenever a new account is created
 
-    def account_display(self):
+    # this method only used at the creation of an account. BUT IT SHOULD BE USED IN OTHER CASES WHICH NOT.
+    def account_display(self):  # This method is to show the account information after creating it only.
         print(f"Account ID is : {self.account_id} ")
         print(f"Account Balance is : {self.balance}")
         print(f"Account Password is : {self.password}")
         print(f"Account Type is : {self.type}")
 
-    def deposit_setter(self, add):
+    def deposit_setter(self, add):  # This method to add money to the account and print the transaction details
+        # this line is to apply the change to the object, so it can accept another transaction without having to logoff
+        # from the object and create it again
         self.balance = self.balance + int(add)
+        # This line is to change the balance in the dictionary for that account.
         item['account_info']['account_balance'] = self.balance
+
+        # THESE LINES SHOULD BE DONE IN A SPECIAL METHOD TO USE THAT METHOD TWICE INSTEAD OF CODING THIS 5 LINES AGAIN
         transaction_info = datetime.now()
         today_date = transaction_info.date().strftime('%d %m %Y')
         day_number = transaction_info.strftime('%w')
@@ -31,7 +41,8 @@ class BankAccount:
         if self.balance >= int(deduct):
             self.balance = self.balance - int(deduct)
             item['account_info']['account_balance'] = self.balance
-            item['account_info']['account_balance'] = self.balance
+
+            # THESE LINES ARE IN deposit_setter
             transaction_info = datetime.now()
             today_date = transaction_info.date().strftime('%d %m %Y')
             day_number = transaction_info.strftime('%w')
