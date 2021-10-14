@@ -185,28 +185,29 @@ while running:  # Program starts here.
         pprint(clients_book)  # To print the whole book of clients and their information
 
     else:  # Last choice To retrieve a client by its account number for making some transactions
-        test = 0  # Initial value that would be used later to give the client 3 attempts to enter the correct password
+        attempts = 0  # Declare here so it will not give warning that says (variable can be unidentified)
         item = {}  # Declare here so it will not give warning that says (variable can be unidentified)
         for element in clients_book.items():
-            if str(element[1]['account_info']['account_id']) == choice:
-                item = element[1]
+            if str(element[1]['account_info']['account_id']) == choice:  # Here the choice can be an account number
+                item = element[1]  # This is a sub-dictionary from the clients_book contains client/account info
                 # print(item)
-                test = 3
-                break
-        if test == 0:
+                attempts = 3  # Give the user 3 attempts to enter the password correctly
+                break  # stop the for loop after finding the account number
+
+        if attempts == 0:  # If the account number in not the the clients_book print the message
             print("Sorry that item is not available.")
 
-        while test != 0:
-            inside = False
+        while attempts != 0:  # If the account has been found this line will work
             password = input('Enter your password: ')
             if password == item['account_info']['account_password']:
+                # Create an object contains only the data that can be modified from that selected account
                 current_client = Modifications(item['account_info']['account_balance'],
                                                item['account_info']['account_password'],
                                                item['account_info']['account_type'],
                                                item['personal_info']['mobile_no'])
-                test = 0
-                inside = True
-                while inside:
+                attempts = 0  # To make sure that the upper while loop can not run without a correct account id
+                inside = True  # This is for the next loop that designed for a client special menu
+                while inside:  # Start client menu here
                     choice = input("\nEnter '1' for Deposit:\n"
                                    "Enter '2' for Withdraw:\n"
                                    "Enter '3' for update Mobile No:\n"
@@ -217,34 +218,40 @@ while running:  # Program starts here.
                     print('\n')
                     if choice == '1':
                         choice = input("enter amount for deposit:\n")
-                        current_client.deposit_setter(choice)
+                        current_client.deposit_setter(choice)  # To add money
 
                     elif choice == '2':
                         choice = input("enter amount to withdraw:\n")
-                        current_client.withdraw_setter(choice)
+                        current_client.withdraw_setter(choice)  # To deduct money
 
                     elif choice == '3':
                         choice = input("enter new mobile no :\n")
-                        current_client.mobile_setter(choice)
+                        current_client.mobile_setter(choice)  # To modify the client mobile number
 
                     elif choice == '4':
-                        choice = input("enter current password :\n")
-                        confirmation = False
-                        if choice == item['account_info']['account_password']:
-                            while not confirmation:
+                        choice = input("enter current password :\n")  # To make sure that the user is the client
+
+                        # THESE LINES SHOULDN'T BE HERE, IT SHOULD BE INSIDE THE METHOD OF password_setter
+                        confirmation = False  # For the next while loop
+                        if choice == item['account_info']['account_password']:  # If the password is correct
+                            while not confirmation:  # Start a loop of giving the new password twice
                                 new_password = input("enter a new password :\n")
                                 confirm_password = input("enter the password again :\n")
                                 if new_password == confirm_password:
-                                    current_client.password_setter(new_password)
-                                    confirmation = True
+                                    current_client.password_setter(new_password)  # Call the password_setter method
+                                    confirmation = True  # To stop the while loop
                                 else:
                                     print(f"Incorrect confirmation, try again")
+
+                        # For a security reason, the client has only one attempt to enter the current password correctly
                         else:
                             print(f"Incorrect password, You are redirected to the main screen ")
-                            inside = False
+                            inside = False  # to leave the client account entirely
 
-                    elif choice == '5':
+                    elif choice == '5':  # To print the client info
                         # pprint(item)
+
+                        # THESE LINES SHOULDN'T BE SHOWING INFO LIKE THIS, IT SHOULD USE DISPLAY METHODS IN CLASSES
                         for i in range(2):
                             if i == 0:
                                 x = 'account_info'
@@ -258,12 +265,12 @@ while running:  # Program starts here.
                                 print(f"Client National ID is : {item[x]['National_id']}")
                                 print(f"Client Mobile Number is : {item[x]['mobile_no']}")
 
-                    elif choice == '0':
+                    elif choice == '0':  # To leave and close the account
                         inside = False
 
-                    else:
+                    else:  # For unexpected entry from the user
                         print("Invalid Entry, Try again")
 
-            else:
-                test -= 1
-                print(f"Incorrect password, you still have {test} attempts ")
+            else:  # If the client entered a wrong password
+                attempts -= 1  # The attempts will be reduced by one
+                print(f"Incorrect password, you still have {attempts} attempts ")
