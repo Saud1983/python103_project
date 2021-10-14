@@ -5,12 +5,13 @@ from datetime import datetime
 
 class BankAccount:
     """ This Class has no __init__, because it create a bank account based on Client class,
-     this class initiate back account whenever a new client was created, this class has methods like
+     this class initiate bank account whenever a new client was created, this class has methods like
      account_display, deposit_setter, withdraw_setter, password_setter"""
 
     def account_setter(self, client_national_id):  # To pass the client national ID and use it for creating Bank Account
         self.account_id = client_national_id + randint(1000, 9999)  # Calculates the Account ID based on national ID
         self.balance = 0  # Set the balance equals 0 whenever a new account is created
+
         # the plan for account type to be used with special treatment when a client has more than 250,000, but not yet.
         self.type = 'normal'  # Set the account type to normal whenever a new account is created.
         self.password = '0000'  # Set the account password equals 0000 whenever a new account is created
@@ -67,15 +68,19 @@ class BankAccount:
 
 
 class Client(BankAccount):
+    """This class is the responsible for creating new clients + associated account at once, it also has some other
+     methods such as personal_display and mobile_setter"""
 
+    #  The initiation method for a new client, and calling the BankAccount Class for creating the account
     def __init__(self, client_id, n_id, f_name, l_name, mobile):
         self.client_id = client_id
         self.first_name = f_name
         self.last_name = l_name
         self.national_id1 = n_id
         self.mobile = mobile
-        super(Client, self).account_setter(self.national_id1)
+        super(Client, self).account_setter(self.national_id1)  # To create the account based on the client national ID
 
+    #  This method is to save the current created object to a dictionary before using the same object for a new creation
     def client_info_setter(self):
         clients_book[self.client_id] = {
             'personal_info': {
@@ -92,17 +97,20 @@ class Client(BankAccount):
             }
         }
 
-    def personal_display(self):
+    # this method only used at the creation of a client. BUT IT SHOULD BE USED IN OTHER CASES WHICH NOT.
+    def personal_display(self):  # This method is to show the client information after creating it only.
         print(f"Client Name is : {self.first_name} {self.last_name} ")
         print(f"Client national ID is : {self.national_id1}")
         print(f"Client Mobile Number is : {self.mobile}")
 
-    def mobile_setter(self, new_number):
+    def mobile_setter(self, new_number):  # To change the client mobile number
         self.mobile = int(new_number)
         item['personal_info']['mobile_no'] = self.mobile
 
 
 class Modifications(Client):
+    """This class is to create a temporary object that can retrieve account/client data from client_book dictionary
+    so it can modify some information using methods from BankAccount, Client classes """
 
     def __init__(self, account_balance, account_password, account_type, mobile):
         self.balance = account_balance
@@ -111,12 +119,14 @@ class Modifications(Client):
         self.mobile = mobile
 
 
-running = True
-used_sequence = []
-new_client = ""
-ar_weekday = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت']
-clients_book = {}
-# clients_book = {'client1': {'account_info': {'account_balance': 0,
+running = True  # The boolean variable that used by the main while loop of this program
+used_sequence = []  # A serial number list that contains a suffix number of newly created client. Ex client1, client2,..
+new_client = ""  # A string that should contains the word "client" + a number that's not in used_sequence list
+ar_weekday = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت']  # Used in a transaction details
+clients_book = {}  # It's the database that contains all clients details
+
+# Next dictionary is an example with tow clients info that can be used instead of the empty clients_book dictionary
+# clients_book = {'client-1': {'account_info': {'account_balance': 0,
 #                               'account_id': 1022821753,
 #                               'account_password': '0000',
 #                               'account_type': 'normal'},
@@ -124,7 +134,7 @@ clients_book = {}
 #                                'first_name': 'Khalid',
 #                                'last_name': 'Waleed',
 #                                'mobile_no': 500053197}},
-#  'client2': {'account_info': {'account_balance': 0,
+#  'client-2': {'account_info': {'account_balance': 0,
 #                               'account_id': 1066865284,
 #                               'account_password': '0000',
 #                               'account_type': 'normal'},
@@ -132,41 +142,50 @@ clients_book = {}
 #                                'first_name': 'Ali',
 #                                'last_name': 'Ahmed',
 #                                'mobile_no': 533222025}}}
-while running:
+
+
+while running:  # Program starts here.
     choice = input("Enter the account number,"
                    " '1' for creating new account,"
                    " '2' for check the clients book"
                    " or '0' to stop the program :\n")
     # choices
-    if choice == "1":
-        i = len(used_sequence)+1
+    if choice == "1":  # 1st choice
+        i = len(used_sequence)+1  # This variable to make sure that the selected number is not in used_sequence
+
         if i not in used_sequence:
-            review = True
-            while review:
+            review = True  # For the second while loop
+            while review:  # Start adding new client info
+
+                # These next 4 lines can be shortened by using Regex
                 national_id = int(input("ID Please: \n"))
                 first_name = input('First name: \n').lower().capitalize()
                 last_name = input('Last name: \n').lower().capitalize()
                 mobile_no = int(input('mobile number: \n'))
+
+                # Review the new client info
                 print(f"Person's name is: '{first_name} {last_name}', ID {national_id},"
                       f" Phone number is: '{mobile_no}'\n")
                 submit = input("Enter 'Y' to save the entry or simply enter any value to add them again\n").lower()
 
                 if submit == "y":
-                    new_client += f"client{i}"
-                    client_info = Client(new_client, national_id, first_name, last_name, mobile_no)
-                    used_sequence.append(i)
-                    client_info.client_info_setter()
-                    new_client = ""
-                    review = False
-                    client_info.account_display()
-                    client_info.personal_display()
-                    # pprint(clients_book)
-    elif choice == "0":
-        running = False
-    elif choice == "2":
-        pprint(clients_book)
-    else:
-        test = 0
+                    new_client += f"client{i}"  # The key for a sub-dictionary that represents the value of that key
+                    client_info = Client(new_client, national_id, first_name, last_name, mobile_no)  # Create an object
+                    used_sequence.append(i)  # Add this number to used_sequence so it will not be used again
+                    client_info.client_info_setter()  # Add the new client info to a clients_book using a setter method
+                    new_client = ""  # Empty the variable to be used again with new word 'client' with a unique number
+                    client_info.account_display()  # Call a method to display the new client account info
+                    client_info.personal_display()  # Call a method to display the new client personal info
+                    review = False  # Terminate the while loop
+
+    elif choice == "0":  # 2nd choice
+        running = False  # To stop the program
+
+    elif choice == "2":  # 3rd choice
+        pprint(clients_book)  # To print the whole book of clients and their information
+
+    else:  # Last choice To retrieve a client by its account number for making some transactions
+        test = 0  # Initial value that would be used later to give the client 3 attempts to enter the correct password
         item = {}  # Declare here so it will not give warning that says (variable can be unidentified)
         for element in clients_book.items():
             if str(element[1]['account_info']['account_id']) == choice:
