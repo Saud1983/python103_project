@@ -4,31 +4,37 @@ from datetime import datetime
 
 
 class BankAccount:
-    """ This Class has no __init__, because it create a bank account based on Client class,
-     this class initiate bank account whenever a new client was created, this class has methods like
+    """ This Class creates a bank account based on Client class, this class supposed to initiate a bank account
+    whenever a new client was created, this class has methods like
      account_display, deposit_setter, withdraw_setter, password_setter"""
 
-    def account_setter(self, client_national_id):  # To pass the client national ID and use it for creating Bank Account
-        self.account_id = client_national_id + randint(1000, 9999)  # Calculates the Account ID based on national ID
-        self.balance = 0  # Set the balance equals 0 whenever a new account is created
+    def __init__(self, account_id=0, account_balance=0, account_type=0, account_password=0):
+        self.account_id = account_id
+        self.account_balance = account_balance
+        self.account_type = account_type
+        self.account_password = account_password
+
+    def account_setter(self, national_id):  # To pass the client national ID and use it for creating Bank Account
+        self.account_id = national_id + randint(1000, 9999)  # Calculates the Account ID based on national ID
+        self.account_balance = 0  # Set the balance equals 0 whenever a new account is created
 
         # the plan for account type to be used with special treatment when a client has more than 250,000, but not yet.
-        self.type = 'normal'  # Set the account type to normal whenever a new account is created.
-        self.password = '0000'  # Set the account password equals 0000 whenever a new account is created
+        self.account_type = 'normal'  # Set the account type to normal whenever a new account is created.
+        self.account_password = '0000'  # Set the account password equals 0000 whenever a new account is created
 
     # this method only used at the creation of an account. BUT IT SHOULD BE USED IN OTHER CASES WHICH NOT.
     def account_display(self):  # This method is to show the account information after creating it only.
         print(f"Account ID is : {self.account_id} ")
-        print(f"Account Balance is : {self.balance}")
-        print(f"Account Password is : {self.password}")
-        print(f"Account Type is : {self.type}")
+        print(f"Account Balance is : {self.account_balance}")
+        print(f"Account Password is : {self.account_password}")
+        print(f"Account Type is : {self.account_type}")
 
     def deposit_setter(self, add):  # To add money to the account and print the transaction details
         # this line is to apply the change to the object it self, so it can accept another transaction without having
         # to logoff from the object and create it again
-        self.balance = self.balance + int(add)
+        self.account_balance = self.account_balance + int(add)
         # This line is to change the balance in the dictionary for that account.
-        item['account_info']['account_balance'] = self.balance
+        item['account_info']['account_balance'] = self.account_balance
 
         # THESE LINES SHOULD BE DONE IN A SPECIAL METHOD TO USE THAT METHOD TWICE INSTEAD OF CODING THIS 5 LINES AGAIN
         transaction_info = datetime.now()
@@ -39,12 +45,12 @@ class BankAccount:
               f'{ar_weekday[int(day_number)]} بتاريخ  {today_date} الساعه {transaction_time}')
 
     def withdraw_setter(self, deduct):  # To deduct money to the account and print the transaction details
-        if self.balance >= int(deduct):  # To check whether or not the account is sufficient
+        if self.account_balance >= int(deduct):  # To check whether or not the account is sufficient
             # this line is to apply the change to the object it self, so it can accept another transaction without
             # having to logoff from the object and create it again
-            self.balance = self.balance - int(deduct)
+            self.account_balance = self.account_balance - int(deduct)
             # This line is to change the balance in the dictionary for that account.
-            item['account_info']['account_balance'] = self.balance
+            item['account_info']['account_balance'] = self.account_balance
 
             # THESE LINES ARE IN deposit_setter AND SHOULDN'T BE LIKE THIS
             transaction_info = datetime.now()
@@ -72,13 +78,14 @@ class Client(BankAccount):
      methods such as personal_display and mobile_setter"""
 
     #  The initiation method for a new client, and calling the BankAccount Class for creating the account
-    def __init__(self, client_id, n_id, f_name, l_name, mobile):
+    def __init__(self, client_id="", national_id=0, first_name="", last_name="", mobile=0):
+        BankAccount.__init__(self)  # Just to remove the warning
         self.client_id = client_id
-        self.first_name = f_name
-        self.last_name = l_name
-        self.national_id1 = n_id
+        self.first_name = first_name
+        self.last_name = last_name
+        self.national_id = national_id
         self.mobile = mobile
-        super(Client, self).account_setter(self.national_id1)  # To create the account based on the client national ID
+        super(Client, self).account_setter(self.national_id)  # To create the account based on the client national ID
 
     #  This method is to save the current created object to a dictionary before using the same object for a new creation
     def client_info_setter(self):
@@ -86,21 +93,21 @@ class Client(BankAccount):
             'personal_info': {
                 'first_name': self.first_name,
                 'last_name': self.last_name,
-                'National_id': self.national_id1,
+                'National_id': self.national_id,
                 'mobile_no': self.mobile
             },
             'account_info': {
                 'account_id': self.account_id,
-                'account_balance': self.balance,
-                'account_type': self.type,
-                'account_password': self.password,
+                'account_balance': self.account_balance,
+                'account_type': self.account_type,
+                'account_password': self.account_password,
             }
         }
 
     # this method only used at the creation of a client. BUT IT SHOULD BE USED IN OTHER CASES WHICH NOT.
     def personal_display(self):  # This method is to show the client information after creating it only.
         print(f"Client Name is : {self.first_name} {self.last_name} ")
-        print(f"Client national ID is : {self.national_id1}")
+        print(f"Client national ID is : {self.national_id}")
         print(f"Client Mobile Number is : {self.mobile}")
 
     def mobile_setter(self, new_number):  # To change the client mobile number
@@ -113,9 +120,10 @@ class Modifications(Client):
     so it can modify some information using methods from BankAccount, Client classes """
 
     def __init__(self, account_balance, account_password, account_type, mobile):
-        self.balance = account_balance
-        self.password = account_password
-        self.type = account_type
+        Client.__init__(self)  # Just to remove the warning
+        self.account_balance = account_balance
+        self.account_password = account_password
+        self.account_type = account_type
         self.mobile = mobile
 
 
@@ -158,19 +166,19 @@ while running:  # Program starts here.
             while review:  # Start adding new client info
 
                 # These next 4 lines can be shortened by using Regex
-                national_id = int(input("ID Please: \n"))
-                first_name = input('First name: \n').lower().capitalize()
-                last_name = input('Last name: \n').lower().capitalize()
-                mobile_no = int(input('mobile number: \n'))
+                cl_n_id = int(input("ID Please: \n"))
+                cl_f_name = input('First name: \n').lower().capitalize()
+                cl_l_name = input('Last name: \n').lower().capitalize()
+                cl_mobile = int(input('mobile number: \n'))
 
                 # Review the new client info
-                print(f"Person's name is: '{first_name} {last_name}', ID {national_id},"
-                      f" Phone number is: '{mobile_no}'\n")
+                print(f"Person's name is: '{cl_f_name} {cl_l_name}', ID {cl_n_id},"
+                      f" Phone number is: '{cl_mobile}'\n")
                 submit = input("Enter 'Y' to save the entry or simply enter any value to add them again\n").lower()
 
                 if submit == "y":
                     new_client += f"client{i}"  # The key for a sub-dictionary that represents the value of that key
-                    client_info = Client(new_client, national_id, first_name, last_name, mobile_no)  # Create an object
+                    client_info = Client(new_client, cl_n_id, cl_f_name, cl_l_name, cl_mobile)  # Create an object
                     used_sequence.append(i)  # Add this number to used_sequence so it will not be used again
                     client_info.client_info_setter()  # Add the new client info to a clients_book using a setter method
                     new_client = ""  # Empty the variable to be used again with new word 'client' with a unique number
