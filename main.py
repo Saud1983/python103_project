@@ -8,6 +8,12 @@ class BankAccount:
     whenever a new client was created, this class has methods like
      account_display, deposit_setter, withdraw_setter, password_setter"""
 
+    # THE NEXT 4 LINES SHOULD BE BETTER THAN THIS
+    transaction_info = datetime.now()
+    today_date = transaction_info.date().strftime('%d %m %Y')
+    day_number = transaction_info.strftime('%w')
+    transaction_time = transaction_info.time().strftime('%I:%M %p')
+
     # I used default values for this init method because I have tow different scenarios.
 
     # One is calling this class for creating a new account, and that will use the default values to create the object
@@ -43,13 +49,9 @@ class BankAccount:
         # This line is to change the balance in the dictionary for that account.
         item['account_info']['account_balance'] = self.account_balance
 
-        # THESE LINES SHOULD BE DONE IN A SPECIAL METHOD TO USE THAT METHOD TWICE INSTEAD OF CODING THIS 5 LINES AGAIN
-        transaction_info = datetime.now()
-        today_date = transaction_info.date().strftime('%d %m %Y')
-        day_number = transaction_info.strftime('%w')
-        transaction_time = transaction_info.time().strftime('%I:%M %p')
         print(f'تم ايداع {add} ريال لرصيدك البنكي في يوم '
-              f'{ar_weekday[int(day_number)]} بتاريخ  {today_date} الساعه {transaction_time}')
+              f'{ar_weekday[int(BankAccount.day_number)]} بتاريخ  {BankAccount.today_date} '
+              f'الساعه {BankAccount.transaction_time}')
 
     def withdraw_setter(self, deduct):  # To deduct money to the account and print the transaction details
         if self.account_balance >= int(deduct):  # To check whether or not the account is sufficient
@@ -59,13 +61,9 @@ class BankAccount:
             # This line is to change the balance in the dictionary for that account.
             item['account_info']['account_balance'] = self.account_balance
 
-            # THESE LINES ARE IN deposit_setter AND SHOULDN'T BE LIKE THIS
-            transaction_info = datetime.now()
-            today_date = transaction_info.date().strftime('%d %m %Y')
-            day_number = transaction_info.strftime('%w')
-            transaction_time = transaction_info.time().strftime('%I:%M %p')
             print(f'تم خصم {deduct} ريال من رصيدك البنكي في يوم .'
-                  f'{ar_weekday[int(day_number)]} بتاريخ  {today_date} الساعه {transaction_time}')
+                  f'{ar_weekday[int(BankAccount.day_number)]} بتاريخ  {BankAccount.today_date} '
+                  f'الساعه {BankAccount.transaction_time}')
         else:
             print('Your account balance is not sufficient for this withdraw!!!')
 
@@ -153,7 +151,7 @@ running = True  # The boolean variable that used by the main while loop of this 
 used_sequence = []  # A serial number list that contains a suffix number of newly created client. Ex client1, client2,..
 new_client = ""  # A string that should contains the word "client" + a number that's not in used_sequence list
 ar_weekday = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت']  # Used in a transaction details
-# clients_book = {}  # It's the database that contains all clients details
+# clients_book = {}  # It's the database that contains all clients details,,,  the empty version
 
 # Next dictionary is an example with tow clients info that can be used instead of the empty clients_book dictionary
 clients_book = {'client-1': {'account_info': {'account_balance': 0,
