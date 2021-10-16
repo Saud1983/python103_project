@@ -119,11 +119,15 @@ class Modifications(Client):
     """This class is to create a temporary object that can retrieve account/client data from client_book dictionary
     so it can modify some information using methods from BankAccount, Client classes """
 
-    def __init__(self, account_balance, account_password, account_type, mobile):
+    def __init__(self, account_id, account_balance, account_password, account_type, n_id, f_name, l_name, mobile):
         Client.__init__(self)  # Just to remove the warning
+        self.account_id = account_id
         self.account_balance = account_balance
         self.account_password = account_password
         self.account_type = account_type
+        self.national_id = n_id
+        self.first_name = f_name
+        self.last_name = l_name
         self.mobile = mobile
 
 
@@ -131,25 +135,25 @@ running = True  # The boolean variable that used by the main while loop of this 
 used_sequence = []  # A serial number list that contains a suffix number of newly created client. Ex client1, client2,..
 new_client = ""  # A string that should contains the word "client" + a number that's not in used_sequence list
 ar_weekday = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت']  # Used in a transaction details
-clients_book = {}  # It's the database that contains all clients details
+# clients_book = {}  # It's the database that contains all clients details
 
 # Next dictionary is an example with tow clients info that can be used instead of the empty clients_book dictionary
-# clients_book = {'client-1': {'account_info': {'account_balance': 0,
-#                               'account_id': 1022821753,
-#                               'account_password': '0000',
-#                               'account_type': 'normal'},
-#              'personal_info': {'National_id': 1022818684,
-#                                'first_name': 'Khalid',
-#                                'last_name': 'Waleed',
-#                                'mobile_no': 500053197}},
-#  'client-2': {'account_info': {'account_balance': 0,
-#                               'account_id': 1066865284,
-#                               'account_password': '0000',
-#                               'account_type': 'normal'},
-#              'personal_info': {'National_id': 1066858745,
-#                                'first_name': 'Ali',
-#                                'last_name': 'Ahmed',
-#                                'mobile_no': 533222025}}}
+clients_book = {'client-1': {'account_info': {'account_balance': 0,
+                              'account_id': 1022821753,
+                              'account_password': '0000',
+                              'account_type': 'normal'},
+             'personal_info': {'National_id': 1022818684,
+                               'first_name': 'Khalid',
+                               'last_name': 'Waleed',
+                               'mobile_no': 500053197}},
+ 'client-2': {'account_info': {'account_balance': 0,
+                              'account_id': 1066865284,
+                              'account_password': '0000',
+                              'account_type': 'normal'},
+             'personal_info': {'National_id': 1066858745,
+                               'first_name': 'Ali',
+                               'last_name': 'Ahmed',
+                               'mobile_no': 533222025}}}
 
 
 while running:  # Program starts here.
@@ -209,9 +213,13 @@ while running:  # Program starts here.
             password = input('Enter your password: ')
             if password == item['account_info']['account_password']:
                 # Create an object contains only the data that can be modified from that selected account
-                current_client = Modifications(item['account_info']['account_balance'],
+                current_client = Modifications(item['account_info']['account_id'],
+                                               item['account_info']['account_balance'],
                                                item['account_info']['account_password'],
                                                item['account_info']['account_type'],
+                                               item['personal_info']['National_id'],
+                                               item['personal_info']['first_name'],
+                                               item['personal_info']['last_name'],
                                                item['personal_info']['mobile_no'])
                 attempts = 0  # To make sure that the upper while loop can not run without a correct account id
                 inside = True  # This is for the next loop that designed for a client special menu
@@ -257,21 +265,8 @@ while running:  # Program starts here.
                             inside = False  # to leave the client account entirely
 
                     elif choice == '5':  # To print the client info
-                        # pprint(item)
-
-                        # THESE LINES SHOULDN'T BE SHOWING INFO LIKE THIS, IT SHOULD USE DISPLAY METHODS IN CLASSES
-                        for i in range(2):
-                            if i == 0:
-                                x = 'account_info'
-                                print(f"Account ID is : {item[x]['account_id']}")
-                                print(f"Account Balance is : {item[x]['account_balance']}")
-                                print(f"Account Password is : {item[x]['account_password']}")
-                                print(f"Account Type is : {item[x]['account_type']}")
-                            else:
-                                x = 'personal_info'
-                                print(f"Client Name is : {item[x]['first_name']} {item[x]['last_name']}")
-                                print(f"Client National ID is : {item[x]['National_id']}")
-                                print(f"Client Mobile Number is : {item[x]['mobile_no']}")
+                        current_client.account_display()
+                        current_client.personal_display()
 
                     elif choice == '0':  # To leave and close the account
                         inside = False
