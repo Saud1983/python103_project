@@ -119,13 +119,13 @@ class Modifications(Client):
     """This class is to create a temporary object that can retrieve account/client data from client_book dictionary
     so it can modify some information using methods from BankAccount, Client classes """
 
-    def __init__(self, account_id, account_balance, account_password, account_type, n_id, f_name, l_name, mobile):
+    def __init__(self, account_id, account_balance, account_password, account_type, nation_id, f_name, l_name, mobile):
         Client.__init__(self)  # Just to remove the warning
         self.account_id = account_id
         self.account_balance = account_balance
         self.account_password = account_password
         self.account_type = account_type
-        self.national_id = n_id
+        self.national_id = nation_id
         self.first_name = f_name
         self.last_name = l_name
         self.mobile = mobile
@@ -139,21 +139,21 @@ ar_weekday = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربع�
 
 # Next dictionary is an example with tow clients info that can be used instead of the empty clients_book dictionary
 clients_book = {'client-1': {'account_info': {'account_balance': 0,
-                              'account_id': 1022821753,
-                              'account_password': '0000',
-                              'account_type': 'normal'},
-             'personal_info': {'National_id': 1022818684,
-                               'first_name': 'Khalid',
-                               'last_name': 'Waleed',
-                               'mobile_no': 500053197}},
- 'client-2': {'account_info': {'account_balance': 0,
-                              'account_id': 1066865284,
-                              'account_password': '0000',
-                              'account_type': 'normal'},
-             'personal_info': {'National_id': 1066858745,
-                               'first_name': 'Ali',
-                               'last_name': 'Ahmed',
-                               'mobile_no': 533222025}}}
+                                              'account_id': 1022821753,
+                                              'account_password': '0000',
+                                              'account_type': 'normal'},
+                             'personal_info': {'National_id': 1022818684,
+                                               'first_name': 'Khalid',
+                                               'last_name': 'Waleed',
+                                               'mobile_no': 500053197}},
+                'client-2': {'account_info': {'account_balance': 0,
+                                              'account_id': 1066865284,
+                                              'account_password': '0000',
+                                              'account_type': 'normal'},
+                             'personal_info': {'National_id': 1066858745,
+                                               'first_name': 'Ali',
+                                               'last_name': 'Ahmed',
+                                               'mobile_no': 533222025}}}
 
 
 while running:  # Program starts here.
@@ -212,7 +212,7 @@ while running:  # Program starts here.
         while attempts != 0:  # If the account has been found this line will work
             password = input('Enter your password: ')
             if password == item['account_info']['account_password']:
-                # Create an object contains only the data that can be modified from that selected account
+                # Create an object contains the data for that selected account
                 current_client = Modifications(item['account_info']['account_id'],
                                                item['account_info']['account_balance'],
                                                item['account_info']['account_password'],
