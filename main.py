@@ -8,6 +8,13 @@ class BankAccount:
     whenever a new client was created, this class has methods like
      account_display, deposit_setter, withdraw_setter, password_setter"""
 
+    # I used default values for this init method because I have tow different scenarios.
+
+    # One is calling this class for creating a new account, and that will use the default values to create the object
+    # then will go to account_setter to give the official values for that created account.
+
+    # The other scenario is when calling this class for retrieving account data that already exists, and for that
+    # the init method will use the real data that has been passed to it.
     def __init__(self, account_id=0, account_balance=0, account_type=0, account_password=0):
         self.account_id = account_id
         self.account_balance = account_balance
@@ -62,15 +69,26 @@ class BankAccount:
         else:
             print('Your account balance is not sufficient for this withdraw!!!')
 
-    def password_setter(self, account_password):  # To change the account password
-        #  there is a condition to confirm the old password before updating it, and that condition should be here
+    def password_setter(self):  # To change the account password
+        old_password = input("enter current password :\n")  # To make sure that the user is the client
+        confirmation = False  # For the next while loop
+        if old_password == item['account_info']['account_password']:  # If the password is correct
+            while not confirmation:  # Start a loop of giving the new password twice
+                new_password = input("enter a new password :\n")
+                confirm_password = input("enter the password again :\n")
+                if new_password == confirm_password:
+                    # this line is to apply the change to the object it self, so it can accept another transaction
+                    # without having to logoff from the object and create it again
+                    self.account_password = new_password
 
-        # this line is to apply the change to the object it self, so it can accept another transaction without
-        # having to logoff from the object and create it again
-        self.account_password = account_password
-
-        # This line is to change the password in the dictionary for that account.
-        item['account_info']['account_password'] = self.account_password
+                    # This line is to change the password in the dictionary for that account.
+                    item['account_info']['account_password'] = self.account_password
+                    return True  # This is because I need to return a boolean value for continuing in the client menu
+                else:
+                    print(f"Incorrect confirmation, try again")
+        else:
+            print(f"Incorrect password, You are redirected to the main screen ")
+            return False  # to leave the client account entirely
 
 
 class Client(BankAccount):
@@ -245,24 +263,9 @@ while running:  # Program starts here.
                         current_client.mobile_setter(choice)  # To modify the client mobile number
 
                     elif choice == '4':
-                        choice = input("enter current password :\n")  # To make sure that the user is the client
-
-                        # THESE LINES SHOULDN'T BE HERE, IT SHOULD BE INSIDE THE METHOD OF password_setter
-                        confirmation = False  # For the next while loop
-                        if choice == item['account_info']['account_password']:  # If the password is correct
-                            while not confirmation:  # Start a loop of giving the new password twice
-                                new_password = input("enter a new password :\n")
-                                confirm_password = input("enter the password again :\n")
-                                if new_password == confirm_password:
-                                    current_client.password_setter(new_password)  # Call the password_setter method
-                                    confirmation = True  # To stop the while loop
-                                else:
-                                    print(f"Incorrect confirmation, try again")
-
-                        # For a security reason, the client has only one attempt to enter the current password correctly
-                        else:
-                            print(f"Incorrect password, You are redirected to the main screen ")
-                            inside = False  # to leave the client account entirely
+                        value = current_client.password_setter()
+                        if not value:
+                            inside = value  # to leave the client account entirely
 
                     elif choice == '5':  # To print the client info
                         current_client.account_display()
