@@ -72,6 +72,7 @@ class BankAccount:
             return self.account_balance
         else:
             print('Your account balance is not sufficient for this withdraw!!!')
+            return self.account_balance
 
     def password_setter(self, current_password):  # To change the account password
         old_password = input("enter current password :\n")  # To make sure that the user is the client
