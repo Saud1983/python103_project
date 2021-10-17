@@ -7,22 +7,26 @@ class BankAccount:
     whenever a new client was created, this class has methods like
      account_display, deposit_setter, withdraw_setter, password_setter"""
 
-    # Used in a transaction details
+    # Used in transaction details
     ar_weekday = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت']
 
+    months = ['يناير', 'فبراير', 'مارس', 'ابريل', 'مايو', 'يونيو', 'يوليو', 'اغسطس', 'سبتمبر', 'اكتوبر', 'نوفمبر',
+              'ديسمبر']
     # THE NEXT 4 LINES SHOULD BE BETTER THAN THIS
     transaction_info = datetime.now()
-    today_date = transaction_info.date().strftime('%d %m %Y')
+    today_date = transaction_info.date().strftime('%d %m %Y').split(" ")
+    month_name = months[int(today_date[1])]
+    today_date[1] = month_name
+    today_date = ' '.join(today_date)
     day_number = transaction_info.strftime('%w')
     transaction_time = transaction_info.time().strftime('%I:%M %p')
 
     # I used default values for this init method because I have tow different scenarios.
+    # 1: is calling this class for creating a new account, and that will use the default values to create the object
+    #   then will go to account_setter to give the official values for that created account.
 
-    # One is calling this class for creating a new account, and that will use the default values to create the object
-    # then will go to account_setter to give the official values for that created account.
-
-    # The other scenario is when calling this class for retrieving account data that already exists, and for that
-    # the init method will use the real data that has been passed to it.
+    # 2: is when calling this class for retrieving account data that already exists, and for that
+    #   the init method will use the real data that has been passed to it.
     def __init__(self, account_id=0, account_balance=0, account_type=0, account_password=0):
         self.account_id = account_id
         self.account_balance = account_balance
