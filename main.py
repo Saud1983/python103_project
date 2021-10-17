@@ -1,4 +1,4 @@
-from pprint import pprint
+# from pprint import pprint
 from clients import Client
 from modifications import Modifications
 import re
@@ -38,10 +38,11 @@ def new_entry(entry):
 
 running = True  # The boolean variable that used by the main while loop of this program
 used_sequence = []  # A serial number list that contains a suffix number of newly created client. Ex client1, client2,..
+item = {}  # Declare here so it will not give warning that says (variable can be unidentified)
 # clients_book = {}  # It's the empty version of the database that contains all clients details.
 
 # Next dictionary is an example with tow clients info that can be used instead of the empty clients_book dictionary
-clients_book = {'client-1': {'account_info': {'account_balance': 0,
+clients_book = {'client00': {'account_info': {'account_balance': 0,
                                               'account_id': 1022821753,
                                               'account_password': '0000',
                                               'account_type': 'normal'},
@@ -49,7 +50,7 @@ clients_book = {'client-1': {'account_info': {'account_balance': 0,
                                                'first_name': 'Khalid',
                                                'last_name': 'Waleed',
                                                'mobile_no': 500053197}},
-                'client-2': {'account_info': {'account_balance': 0,
+                'client0': {'account_info': {'account_balance': 0,
                                               'account_id': 1066865284,
                                               'account_password': '0000',
                                               'account_type': 'normal'},
@@ -80,11 +81,26 @@ while running:  # Program starts here.
         running = False  # To stop the program
 
     elif choice1 == "2":  # 3rd choice
-        pprint(clients_book)  # To print the whole book of clients and their information
+        for key, value in clients_book.items():
+            print(key)
+            item = value
+            current_client = Modifications(item['account_info']['account_id'],
+                                           item['account_info']['account_balance'],
+                                           item['account_info']['account_password'],
+                                           item['account_info']['account_type'],
+                                           item['personal_info']['National_id'],
+                                           item['personal_info']['first_name'],
+                                           item['personal_info']['last_name'],
+                                           item['personal_info']['mobile_no'])
+            current_client.account_display()
+            current_client.personal_display()
+            print('\n')
+
+        # pprint(clients_book)  # To print the whole book of clients and their information
 
     else:  # Last choice To retrieve a client by its account number for making some transactions
         attempts = 0  # Declare here so it will not give warning that says (variable can be unidentified)
-        item = {}  # Declare here so it will not give warning that says (variable can be unidentified)
+
         for element in clients_book.items():
             if str(element[1]['account_info']['account_id']) == choice1:  # Here the choice can be an account number
                 item = element[1]  # This is a sub-dictionary from the clients_book contains client/account info
