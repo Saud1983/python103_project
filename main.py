@@ -9,10 +9,10 @@ def new_entry(entry):
     pattern = re.compile(r"\d{10}, ?[a-zA-Z]+, ?[a-zA-Z]+, ?5\d{8}")
     if re.match(pattern, entry):
         entry_parts = entry.split(',')
-        cl_n_id = int(entry_parts[0])
-        cl_f_name = entry_parts[1].lower().capitalize()
-        cl_l_name = entry_parts[2].lower().capitalize()
-        cl_mobile = int(entry_parts[3])
+        cl_n_id = int(entry_parts[0])  # To get client's national ID
+        cl_f_name = entry_parts[1].lower().capitalize()  # To get client's first name
+        cl_l_name = entry_parts[2].lower().capitalize()  # To get client's last name
+        cl_mobile = int(entry_parts[3])  # To get client's mobile number
 
         # Review the new client info
         print(f"Person's name is: '{cl_f_name} {cl_l_name}', ID {cl_n_id},"

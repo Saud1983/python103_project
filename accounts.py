@@ -9,17 +9,23 @@ class BankAccount:
 
     # Used in transaction details
     ar_weekday = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت']
-
     months = ['يناير', 'فبراير', 'مارس', 'ابريل', 'مايو', 'يونيو', 'يوليو', 'اغسطس', 'سبتمبر', 'اكتوبر', 'نوفمبر',
               'ديسمبر']
+
     # THE NEXT 4 LINES SHOULD BE BETTER THAN THIS
     transaction_info = datetime.now()
-    today_date = transaction_info.date().strftime('%d %m %Y').split(" ")
-    month_name = months[int(today_date[1])]
-    today_date[1] = month_name
-    today_date = ' '.join(today_date)
-    day_number = transaction_info.strftime('%w')
-    transaction_time = transaction_info.time().strftime('%I:%M %p')
+    today_date = transaction_info.date().strftime('%d %m %Y').split(" ")  # Make a list of ['DD','MM','YYYY']
+    month_name = months[int(today_date[1])]  # Get the name of the month based on the month number
+    today_date[1] = month_name  # Change the second element from being month number to be the arabic name of the month
+    today_date = ' '.join(today_date)  # convert the list to a string
+    day_number = transaction_info.strftime('%w')  # Get the day number of the week
+    day_name = ar_weekday[int(day_number)]  # Get the arabic day name based on the day number of the week
+    transaction_time = transaction_info.time().strftime('%I:%M %p').split(' ')  # Get the time in am/pm format as a list
+    if transaction_time[1].lower() == 'am':
+        transaction_time[1] = 'صباحاً'
+    else:
+        transaction_time[1] = 'مساءاً'
+    transaction_time = ' '.join(transaction_time)  # Convert the time to a string
 
     # I used default values for this init method because I have tow different scenarios.
     # 1: is calling this class for creating a new account, and that will use the default values to create the object
@@ -53,8 +59,7 @@ class BankAccount:
         # to logoff from the object and create it again
         self.account_balance = self.account_balance + int(add)
         print(f'تم ايداع {add} ريال لرصيدك البنكي في يوم '
-              f'{BankAccount.ar_weekday[int(BankAccount.day_number)]} بتاريخ  {BankAccount.today_date} '
-              f'الساعه {BankAccount.transaction_time}')
+              f'{BankAccount.day_name} بتاريخ  {BankAccount.today_date} الساعه {BankAccount.transaction_time}')
         return self.account_balance
 
     def withdraw_setter(self, deduct):  # To deduct money to the account and print the transaction details
@@ -63,8 +68,7 @@ class BankAccount:
             # having to logoff from the object and create it again
             self.account_balance = self.account_balance - int(deduct)
             print(f'تم خصم {deduct} ريال من رصيدك البنكي في يوم .'
-                  f'{BankAccount.ar_weekday[int(BankAccount.day_number)]} بتاريخ  {BankAccount.today_date} '
-                  f'الساعه {BankAccount.transaction_time}')
+                  f'{BankAccount.day_name} بتاريخ  {BankAccount.today_date} الساعه {BankAccount.transaction_time}')
             return self.account_balance
         else:
             print('Your account balance is not sufficient for this withdraw!!!')
