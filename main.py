@@ -1,21 +1,6 @@
 from pprint import pprint
 from clients import Client
-
-
-class Modifications(Client):
-    """This class is to create a temporary object that can retrieve account/client data from client_book dictionary
-    so it can modify some information using methods from BankAccount, Client classes """
-
-    def __init__(self, account_id, account_balance, account_password, account_type, nation_id, f_name, l_name, mobile):
-        Client.__init__(self)  # Just to remove the warning
-        self.account_id = account_id
-        self.account_balance = account_balance
-        self.account_password = account_password
-        self.account_type = account_type
-        self.national_id = nation_id
-        self.first_name = f_name
-        self.last_name = l_name
-        self.mobile = mobile
+from modifications import Modifications
 
 
 running = True  # The boolean variable that used by the main while loop of this program
@@ -57,28 +42,39 @@ while running:  # Program starts here.
             while review:  # Start adding new client info
 
                 # These next 4 lines can be shortened by using Regex
-                cl_n_id = int(input("ID Please: \n"))
-                cl_f_name = input('First name: \n').lower().capitalize()
-                cl_l_name = input('Last name: \n').lower().capitalize()
-                cl_mobile = int(input('mobile number: \n'))
+                new_entry_attempts = True
+                while new_entry_attempts:
+                    try:
+                        cl_n_id = int(input("ID Please: \n"))
+                        cl_f_name = input('First name: \n').lower().capitalize()
+                        cl_l_name = input('Last name: \n').lower().capitalize()
+                        cl_mobile = int(input('mobile number: \n'))
+                        # Review the new client info
+                        print(f"Person's name is: '{cl_f_name} {cl_l_name}', ID {cl_n_id},"
+                              f" Phone number is: '{cl_mobile}'\n")
+                        submit = input(
+                            "Enter 'Y' to save the entry or simply enter any value to add them again\n").lower()
 
-                # Review the new client info
-                print(f"Person's name is: '{cl_f_name} {cl_l_name}', ID {cl_n_id},"
-                      f" Phone number is: '{cl_mobile}'\n")
-                submit = input("Enter 'Y' to save the entry or simply enter any value to add them again\n").lower()
+                        if submit == "y":
+                            # This is a key for a sub-dictionary that represents the value of that key
+                            new_client += f"client{i}"
+                            client_info = Client(new_client, cl_n_id, cl_f_name, cl_l_name,
+                                                 cl_mobile)  # Create an object
+                            used_sequence.append(i)  # Add this number to used_sequence so it will not be used again
 
-                if submit == "y":
-                    new_client += f"client{i}"  # The key for a sub-dictionary that represents the value of that key
-                    client_info = Client(new_client, cl_n_id, cl_f_name, cl_l_name, cl_mobile)  # Create an object
-                    used_sequence.append(i)  # Add this number to used_sequence so it will not be used again
+                            # Add the new client info to a clients_book using a setter method
+                            clients_book[new_client] = client_info.client_info_setter()
 
-                    # Add the new client info to a clients_book using a setter method
-                    clients_book[new_client] = client_info.client_info_setter()
+                            # Empty the variable to be used again with new word 'client' with a unique number
+                            new_client = ""
+                            client_info.account_display()  # Call a method to display the new client account info
+                            client_info.personal_display()  # Call a method to display the new client personal info
+                            review = False  # Terminate the while loop
 
-                    new_client = ""  # Empty the variable to be used again with new word 'client' with a unique number
-                    client_info.account_display()  # Call a method to display the new client account info
-                    client_info.personal_display()  # Call a method to display the new client personal info
-                    review = False  # Terminate the while loop
+                        new_entry_attempts = False
+                    except ValueError:
+                        new_entry_attempts -= 1
+                        print('The value you entered is not a number, try again')
 
     elif choice == "0":  # 2nd choice
         running = False  # To stop the program
