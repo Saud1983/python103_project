@@ -8,6 +8,9 @@ class BankAccount:
     whenever a new client was created, this class has methods like
      account_display, deposit_setter, withdraw_setter, password_setter"""
 
+    # Used in a transaction details
+    ar_weekday = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت']
+
     # THE NEXT 4 LINES SHOULD BE BETTER THAN THIS
     transaction_info = datetime.now()
     today_date = transaction_info.date().strftime('%d %m %Y')
@@ -35,8 +38,8 @@ class BankAccount:
         self.account_type = 'normal'  # Set the account type to normal whenever a new account is created.
         self.account_password = '0000'  # Set the account password equals 0000 whenever a new account is created
 
-    # this method only used at the creation of an account. BUT IT SHOULD BE USED IN OTHER CASES WHICH NOT.
-    def account_display(self):  # This method is to show the account information after creating it only.
+    # This method is to show the account information.
+    def account_display(self):
         print(f"Account ID is : {self.account_id} ")
         print(f"Account Balance is : {self.account_balance}")
         print(f"Account Password is : {self.account_password}")
@@ -46,31 +49,27 @@ class BankAccount:
         # this line is to apply the change to the object it self, so it can accept another transaction without having
         # to logoff from the object and create it again
         self.account_balance = self.account_balance + int(add)
-        # This line is to change the balance in the dictionary for that account.
-        item['account_info']['account_balance'] = self.account_balance
-
         print(f'تم ايداع {add} ريال لرصيدك البنكي في يوم '
-              f'{ar_weekday[int(BankAccount.day_number)]} بتاريخ  {BankAccount.today_date} '
+              f'{BankAccount.ar_weekday[int(BankAccount.day_number)]} بتاريخ  {BankAccount.today_date} '
               f'الساعه {BankAccount.transaction_time}')
+        return self.account_balance
 
     def withdraw_setter(self, deduct):  # To deduct money to the account and print the transaction details
         if self.account_balance >= int(deduct):  # To check whether or not the account is sufficient
             # this line is to apply the change to the object it self, so it can accept another transaction without
             # having to logoff from the object and create it again
             self.account_balance = self.account_balance - int(deduct)
-            # This line is to change the balance in the dictionary for that account.
-            item['account_info']['account_balance'] = self.account_balance
-
             print(f'تم خصم {deduct} ريال من رصيدك البنكي في يوم .'
-                  f'{ar_weekday[int(BankAccount.day_number)]} بتاريخ  {BankAccount.today_date} '
+                  f'{BankAccount.ar_weekday[int(BankAccount.day_number)]} بتاريخ  {BankAccount.today_date} '
                   f'الساعه {BankAccount.transaction_time}')
+            return self.account_balance
         else:
             print('Your account balance is not sufficient for this withdraw!!!')
 
-    def password_setter(self):  # To change the account password
+    def password_setter(self, current_password):  # To change the account password
         old_password = input("enter current password :\n")  # To make sure that the user is the client
         confirmation = False  # For the next while loop
-        if old_password == item['account_info']['account_password']:  # If the password is correct
+        if old_password == current_password:  # If the password is correct
             while not confirmation:  # Start a loop of giving the new password twice
                 new_password = input("enter a new password :\n")
                 confirm_password = input("enter the password again :\n")
@@ -78,15 +77,12 @@ class BankAccount:
                     # this line is to apply the change to the object it self, so it can accept another transaction
                     # without having to logoff from the object and create it again
                     self.account_password = new_password
-
-                    # This line is to change the password in the dictionary for that account.
-                    item['account_info']['account_password'] = self.account_password
-                    return True  # This is because I need to return a boolean value for continuing in the client menu
+                    return self.account_password
                 else:
                     print(f"Incorrect confirmation, try again")
         else:
             print(f"Incorrect password, You are redirected to the main screen ")
-            return False  # to leave the client account entirely
+            return 'Wrong password'  # to leave the client account entirely
 
 
 class Client(BankAccount):
@@ -120,15 +116,15 @@ class Client(BankAccount):
             }
         }
 
-    # this method only used at the creation of a client. BUT IT SHOULD BE USED IN OTHER CASES WHICH NOT.
-    def personal_display(self):  # This method is to show the client information after creating it only.
+    # This method is to show the client information.
+    def personal_display(self):
         print(f"Client Name is : {self.first_name} {self.last_name} ")
         print(f"Client national ID is : {self.national_id}")
         print(f"Client Mobile Number is : {self.mobile}")
 
     def mobile_setter(self, new_number):  # To change the client mobile number
         self.mobile = int(new_number)
-        item['personal_info']['mobile_no'] = self.mobile
+        return self.mobile
 
 
 class Modifications(Client):
@@ -150,8 +146,8 @@ class Modifications(Client):
 running = True  # The boolean variable that used by the main while loop of this program
 used_sequence = []  # A serial number list that contains a suffix number of newly created client. Ex client1, client2,..
 new_client = ""  # A string that should contains the word "client" + a number that's not in used_sequence list
-ar_weekday = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت']  # Used in a transaction details
-# clients_book = {}  # It's the database that contains all clients details,,,  the empty version
+
+# clients_book = {}  # It's the empty version of the database that contains all clients details.
 
 # Next dictionary is an example with tow clients info that can be used instead of the empty clients_book dictionary
 clients_book = {'client-1': {'account_info': {'account_balance': 0,
@@ -173,10 +169,10 @@ clients_book = {'client-1': {'account_info': {'account_balance': 0,
 
 
 while running:  # Program starts here.
-    choice = input("Enter the account number,"
-                   " '1' for creating new account,"
-                   " '2' for check the clients book"
-                   " or '0' to stop the program :\n")
+    choice = input("Enter the account number, or"
+                   " '1' to create a new account,"
+                   " '2' to check the clients book"
+                   " '0' to stop the program :\n")
     # choices
     if choice == "1":  # 1st choice
         i = len(used_sequence)+1  # This variable to make sure that the selected number is not in used_sequence
@@ -250,20 +246,26 @@ while running:  # Program starts here.
                     print('\n')
                     if choice == '1':
                         choice = input("enter amount for deposit:\n")
-                        current_client.deposit_setter(choice)  # To add money
+                        # To add money then update the clients book dictionary
+                        item['account_info']['account_balance'] = current_client.deposit_setter(choice)
 
                     elif choice == '2':
                         choice = input("enter amount to withdraw:\n")
-                        current_client.withdraw_setter(choice)  # To deduct money
+                        # To deduct money then update the clients book dictionary
+                        item['account_info']['account_balance'] = current_client.withdraw_setter(choice)
 
                     elif choice == '3':
                         choice = input("enter new mobile no :\n")
-                        current_client.mobile_setter(choice)  # To modify the client mobile number
+                        # To modify the client mobile number
+                        item['personal_info']['mobile_no'] = current_client.mobile_setter(choice)
 
                     elif choice == '4':
-                        value = current_client.password_setter()
-                        if not value:
-                            inside = value  # to leave the client account entirely
+                        password_value = item['account_info']['account_password']
+                        the_new_password = current_client.password_setter(password_value)
+                        if the_new_password == 'Wrong password':
+                            inside = False  # to leave the client account entirely
+                        else:
+                            item['account_info']['account_password'] = the_new_password  # update the client book
 
                     elif choice == '5':  # To print the client info
                         current_client.account_display()
