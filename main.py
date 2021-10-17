@@ -1,130 +1,5 @@
-from random import randint
 from pprint import pprint
-from datetime import datetime
-
-
-class BankAccount:
-    """ This Class creates a bank account based on Client class, this class supposed to initiate a bank account
-    whenever a new client was created, this class has methods like
-     account_display, deposit_setter, withdraw_setter, password_setter"""
-
-    # Used in a transaction details
-    ar_weekday = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت']
-
-    # THE NEXT 4 LINES SHOULD BE BETTER THAN THIS
-    transaction_info = datetime.now()
-    today_date = transaction_info.date().strftime('%d %m %Y')
-    day_number = transaction_info.strftime('%w')
-    transaction_time = transaction_info.time().strftime('%I:%M %p')
-
-    # I used default values for this init method because I have tow different scenarios.
-
-    # One is calling this class for creating a new account, and that will use the default values to create the object
-    # then will go to account_setter to give the official values for that created account.
-
-    # The other scenario is when calling this class for retrieving account data that already exists, and for that
-    # the init method will use the real data that has been passed to it.
-    def __init__(self, account_id=0, account_balance=0, account_type=0, account_password=0):
-        self.account_id = account_id
-        self.account_balance = account_balance
-        self.account_type = account_type
-        self.account_password = account_password
-
-    def account_setter(self, national_id):  # To pass the client national ID and use it for creating Bank Account
-        self.account_id = national_id + randint(1000, 9999)  # Calculates the Account ID based on national ID
-        self.account_balance = 0  # Set the balance equals 0 whenever a new account is created
-
-        # the plan for account type to be used with special treatment when a client has more than 250,000, but not yet.
-        self.account_type = 'normal'  # Set the account type to normal whenever a new account is created.
-        self.account_password = '0000'  # Set the account password equals 0000 whenever a new account is created
-
-    # This method is to show the account information.
-    def account_display(self):
-        print(f"Account ID is : {self.account_id} ")
-        print(f"Account Balance is : {self.account_balance}")
-        print(f"Account Password is : {self.account_password}")
-        print(f"Account Type is : {self.account_type}")
-
-    def deposit_setter(self, add):  # To add money to the account and print the transaction details
-        # this line is to apply the change to the object it self, so it can accept another transaction without having
-        # to logoff from the object and create it again
-        self.account_balance = self.account_balance + int(add)
-        print(f'تم ايداع {add} ريال لرصيدك البنكي في يوم '
-              f'{BankAccount.ar_weekday[int(BankAccount.day_number)]} بتاريخ  {BankAccount.today_date} '
-              f'الساعه {BankAccount.transaction_time}')
-        return self.account_balance
-
-    def withdraw_setter(self, deduct):  # To deduct money to the account and print the transaction details
-        if self.account_balance >= int(deduct):  # To check whether or not the account is sufficient
-            # this line is to apply the change to the object it self, so it can accept another transaction without
-            # having to logoff from the object and create it again
-            self.account_balance = self.account_balance - int(deduct)
-            print(f'تم خصم {deduct} ريال من رصيدك البنكي في يوم .'
-                  f'{BankAccount.ar_weekday[int(BankAccount.day_number)]} بتاريخ  {BankAccount.today_date} '
-                  f'الساعه {BankAccount.transaction_time}')
-            return self.account_balance
-        else:
-            print('Your account balance is not sufficient for this withdraw!!!')
-
-    def password_setter(self, current_password):  # To change the account password
-        old_password = input("enter current password :\n")  # To make sure that the user is the client
-        confirmation = False  # For the next while loop
-        if old_password == current_password:  # If the password is correct
-            while not confirmation:  # Start a loop of giving the new password twice
-                new_password = input("enter a new password :\n")
-                confirm_password = input("enter the password again :\n")
-                if new_password == confirm_password:
-                    # this line is to apply the change to the object it self, so it can accept another transaction
-                    # without having to logoff from the object and create it again
-                    self.account_password = new_password
-                    return self.account_password
-                else:
-                    print(f"Incorrect confirmation, try again")
-        else:
-            print(f"Incorrect password, You are redirected to the main screen ")
-            return 'Wrong password'  # to leave the client account entirely
-
-
-class Client(BankAccount):
-    """This class is the responsible for creating new clients + associated account at once, it also has some other
-     methods such as personal_display and mobile_setter"""
-
-    #  The initiation method for a new client, and calling the BankAccount Class for creating the account
-    def __init__(self, client_id="", national_id=0, first_name="", last_name="", mobile=0):
-        BankAccount.__init__(self)  # Just to remove the warning
-        self.client_id = client_id
-        self.first_name = first_name
-        self.last_name = last_name
-        self.national_id = national_id
-        self.mobile = mobile
-        super(Client, self).account_setter(self.national_id)  # To create the account based on the client national ID
-
-    #  This method is to save the current created object to a dictionary before using the same object for a new creation
-    def client_info_setter(self):
-        clients_book[self.client_id] = {
-            'personal_info': {
-                'first_name': self.first_name,
-                'last_name': self.last_name,
-                'National_id': self.national_id,
-                'mobile_no': self.mobile
-            },
-            'account_info': {
-                'account_id': self.account_id,
-                'account_balance': self.account_balance,
-                'account_type': self.account_type,
-                'account_password': self.account_password,
-            }
-        }
-
-    # This method is to show the client information.
-    def personal_display(self):
-        print(f"Client Name is : {self.first_name} {self.last_name} ")
-        print(f"Client national ID is : {self.national_id}")
-        print(f"Client Mobile Number is : {self.mobile}")
-
-    def mobile_setter(self, new_number):  # To change the client mobile number
-        self.mobile = int(new_number)
-        return self.mobile
+from clients import Client
 
 
 class Modifications(Client):
@@ -196,7 +71,10 @@ while running:  # Program starts here.
                     new_client += f"client{i}"  # The key for a sub-dictionary that represents the value of that key
                     client_info = Client(new_client, cl_n_id, cl_f_name, cl_l_name, cl_mobile)  # Create an object
                     used_sequence.append(i)  # Add this number to used_sequence so it will not be used again
-                    client_info.client_info_setter()  # Add the new client info to a clients_book using a setter method
+
+                    # Add the new client info to a clients_book using a setter method
+                    clients_book[new_client] = client_info.client_info_setter()
+
                     new_client = ""  # Empty the variable to be used again with new word 'client' with a unique number
                     client_info.account_display()  # Call a method to display the new client account info
                     client_info.personal_display()  # Call a method to display the new client personal info
