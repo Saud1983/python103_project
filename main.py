@@ -84,14 +84,14 @@ while running:  # Program starts here.
         for key, value in clients_book.items():
             print(key)
             item = value
-            current_client = Modifications(item['account_info']['account_id'],
-                                           item['account_info']['account_balance'],
-                                           item['account_info']['account_password'],
-                                           item['account_info']['account_type'],
-                                           item['personal_info']['National_id'],
-                                           item['personal_info']['first_name'],
-                                           item['personal_info']['last_name'],
-                                           item['personal_info']['mobile_no'])
+            current_client = Modifications(account_id=item['account_info']['account_id'],
+                                           account_balance=item['account_info']['account_balance'],
+                                           account_password=item['account_info']['account_password'],
+                                           account_type=item['account_info']['account_type'],
+                                           national_id=item['personal_info']['National_id'],
+                                           first_name=item['personal_info']['first_name'],
+                                           last_name=item['personal_info']['last_name'],
+                                           mobile=item['personal_info']['mobile_no'])
             current_client.account_display()
             current_client.personal_display()
             print('\n')
@@ -115,14 +115,14 @@ while running:  # Program starts here.
             password = input('Enter your password: ')
             if password == item['account_info']['account_password']:
                 # Create an object contains the data for that selected account
-                current_client = Modifications(item['account_info']['account_id'],
-                                               item['account_info']['account_balance'],
-                                               item['account_info']['account_password'],
-                                               item['account_info']['account_type'],
-                                               item['personal_info']['National_id'],
-                                               item['personal_info']['first_name'],
-                                               item['personal_info']['last_name'],
-                                               item['personal_info']['mobile_no'])
+                current_client = Modifications(account_id=item['account_info']['account_id'],
+                                               account_balance=item['account_info']['account_balance'],
+                                               account_password=item['account_info']['account_password'],
+                                               account_type=item['account_info']['account_type'],
+                                               national_id=item['personal_info']['National_id'],
+                                               first_name=item['personal_info']['first_name'],
+                                               last_name=item['personal_info']['last_name'],
+                                               mobile=item['personal_info']['mobile_no'])
                 attempts = 0  # To make sure that the upper while loop can not run without a correct account id
                 inside = True  # This is for the next loop that designed for a client special menu
                 while inside:  # Start client menu here
