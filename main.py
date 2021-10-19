@@ -1,4 +1,3 @@
-# from pprint import pprint
 from clients import Client
 from modifications import Modifications
 import re
@@ -6,7 +5,7 @@ import re
 
 def new_entry(entry):
     new_client = ""  # A string that should contains the word "client" + a number that's not in used_sequence list
-    pattern = re.compile(r"\d{10}, ?[a-zA-Z]+, ?[a-zA-Z]+, ?5\d{8}")
+    pattern = re.compile(r"\d{10}, ?[a-zA-Z]+, ?[a-zA-Z]+, ?5\d{8}$")
     if re.match(pattern, entry):
         entry_parts = entry.split(',')
         cl_n_id = int(entry_parts[0])  # To get client's national ID
@@ -116,7 +115,7 @@ while running:  # Program starts here.
             print("Sorry that item is not available.")
 
         while attempts != 0:  # If the account has been found this line will work
-            password = input('Enter your password: ')
+            password = input('Enter your password:\n')
             if password == item['account_info']['account_password']:
                 # Create an object contains the data for that selected account
                 current_client = calling_modifications(item)
