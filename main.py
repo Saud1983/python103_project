@@ -145,22 +145,30 @@ while running:  # Program starts here.
                                 deposit = True
 
                     elif choice2 == '2':
-                        deposit = True
-                        while deposit:
+                        withdraw = True
+                        while withdraw:
                             choice2 = input("enter amount to withdraw:\n")
                             transaction_pattern = re.compile(r"\d+")
                             if re.match(transaction_pattern, choice2):
                                 # To deduct money then update the clients book dictionary
                                 item['account_info']['account_balance'] = current_client.withdraw_setter(choice2)
-                                deposit = False
+                                withdraw = False
                             else:
                                 print("Wrong Entry, please enter an integer number only!")
-                                deposit = True
+                                withdraw = True
 
                     elif choice2 == '3':
-                        choice2 = input("enter new mobile no :\n")
-                        # To modify the client mobile number
-                        item['personal_info']['mobile_no'] = current_client.mobile_setter(choice2)
+                        mobile_update = True
+                        while mobile_update:
+                            choice2 = input("enter new mobile no :\n")
+                            transaction_pattern = re.compile(r"5\d{8}$")
+                            if re.match(transaction_pattern, choice2):
+                                # To modify the client mobile number
+                                item['personal_info']['mobile_no'] = current_client.mobile_setter(choice2)
+                                mobile_update = False
+                            else:
+                                print("Wrong Entry, please enter an integer number only!")
+                                mobile_update = True
 
                     elif choice2 == '4':
                         password_value = item['account_info']['account_password']
