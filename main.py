@@ -11,8 +11,8 @@ def new_entry(entry):
     if re.match(pattern, entry):
         entry_parts = entry.split(',')
         cl_n_id = int(entry_parts[0])  # To get client's national ID
-        cl_f_name = entry_parts[1].lower().capitalize()  # To get client's first name
-        cl_l_name = entry_parts[2].lower().capitalize()  # To get client's last name
+        cl_f_name = entry_parts[1].strip().lower().capitalize()  # To get client's first name
+        cl_l_name = entry_parts[2].strip().lower().capitalize()  # To get client's last name
         cl_mobile = int(entry_parts[3])  # To get client's mobile number
 
         # Review the new client info
@@ -81,6 +81,10 @@ while running:  # Program starts here.
     with open('clients_book.txt', 'r+') as c:
         cont = c.read()
         clients_book = ast.literal_eval(cont)
+        # dic = []
+        # for i in range(len(reviews_SentAnalysis)):
+        #     dic.append(ast.literal_eval(reviews_SentAnalysis["polarity_scores"][i]))
+        # reviews_SentAnalysis["polarity_scores"] = dic
 
     choice1 = input("Enter the account number, or"
                     " '1' to create a new account,"
